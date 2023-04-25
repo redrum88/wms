@@ -3,28 +3,88 @@ import psycopg2.extras
 
 '''Connection to database class'''
 
-HOST = "localhost"
-DATABASE = "name"
-USER = "postgres"
-PASSWORD = "password"
-
 class Database:
-    def __init__(self):
+    HOST = "localhost"
+    DATABASE = "wms"
+    USER = "postgres"
+    PASSWORD = "Naujas293"
+    
+    def __init__(self, host=HOST, database=DATABASE, user=USER, password=PASSWORD):
         # Try to connect to database and if connection is successful create cursor else create database and connect to it
         try:
             self.connection = psycopg2.connect(
-                host=HOST, database=DATABASE, user=USER, password=PASSWORD)
+                host=host, database=database, user=user, password=password)
             self.cursor = self.connection.cursor(
-                cursor_factory=psycopg2.extras.DictCursor)
-            print("Database connected")
-
-        except (Exception, psycopg2.Error) as error:
-            print("Error while connecting to database", error)
+                cursor_factory=psycopg2.extras.RealDictCursor)
+            print("Connected to database")
+        except psycopg2.OperationalError as e:
+            print("Database not found")
+            print(e)
+            self.create_database()
             self.connection = psycopg2.connect(
-                host=HOST, database=DATABASE, user=USER, password=PASSWORD)
+                host=host, database=database, user=user, password=password)
             self.cursor = self.connection.cursor(
-                cursor_factory=psycopg2.extras.DictCursor)
-            print("Database created and connected")
+                cursor_factory=psycopg2.extras.RealDictCursor)
+            print("Connected to database")
+        self.create_tables()
+
+    def create_database(self):
+        # Create database and connect to it
+        print("Creating database")
+        connection = psycopg2.connect(
+            host=self.HOST, user=self.USER, password=self.PASSWORD)
+        connection.autocommit = True
+        cursor = connection.cursor()
+        cursor.execute(
+            f"CREATE DATABASE {self.DATABASE} WITH OWNER {self.USER}")
+        print("Database created")
+        connection.close()
+
+    def close_connection(self):
+        # Close connection to database
+        self.cursor.close()
+        self.connection.close()
+        print("Connection closed")
+
+    def commit(self):
+        # Commit changes to database
+        self.connection.commit()
+
+    def rollback(self):
+        # Rollback changes to database
+        self.connection.rollback()
+
+    def execute(self, query, values=None):
+        # Execute query
+        self.cursor.execute(query, values)
+
+    def fetchall(self):
+        # Fetch all results
+        return self.cursor.fetchall()
+    
+    def fetchone(self):
+        # Fetch one result
+        return self.cursor.fetchone()
+    
+    def fetchmany(self, size):
+        # Fetch many results
+        return self.cursor.fetchmany(size)
+    
+    def lastrowid(self):
+        # Get last row id
+        return self.cursor.lastrowid
+    
+    def rowcount(self):
+        # Get row count
+        return self.cursor.rowcount
+    
+    def description(self):
+        # Get description
+        return self.cursor.description
+
+    def connection(self):
+        return self.connection
+    
 
     def create_tables(self):
         print("Creating tables")

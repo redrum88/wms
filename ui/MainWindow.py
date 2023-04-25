@@ -1,4 +1,9 @@
-# ui/MainWindow.py
+# Autor: Eimantas aka REDRUM
+# Date: 2023-04-23
+# Version: 1.0.0 Initial version
+# Description: This is a snippet for creating a main window with tabs and menu bar.
+# Path: wms\ui\MainWindow.py
+
 
 import sys
 import os
@@ -12,8 +17,6 @@ import PyQt5.QtCore as qtc
 
 from Tab1 import Tab1
 from Tab2 import Tab2
-# Create QT tab 1 class for MainWindow
-
 
 # Create main window class inheriting from QMainWindow class
 class MainWindow(qtw.QMainWindow):
@@ -79,8 +82,6 @@ if __name__ == '__main__':
     main_window = MainWindow()
     main_window.show()
     sys.exit(app.exec_())
-
-# ui/Tab1.py
 
 
 
