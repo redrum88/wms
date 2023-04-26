@@ -523,7 +523,6 @@ def init_db(DB_TYPE="QPSQL", HOSTNAME="localhost", DATABASE="", USERNAME="postgr
     Prints error message if database cannot be opened.
     """
     def check(func, *args):
-        # First check if database exists, if already exists delete it and create new one
         if func(*args):
             return True
         else:
