@@ -3,477 +3,834 @@
 import sys
 import os
 import time
+from PySide6.QtSql import QSqlDatabase, QSqlQuery
+from datetime import date
 import datetime
 
 
-# Add path to db directory
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+import createdb
 
-import psycopg2
-import psycopg2.extras
-from db_config import Database
-
+DB_TYPE = "QPSQL"
 HOST = "localhost"
-DATABASE = "wms"
+DATABASE = "my_database"
 USER = "postgres"
 PASSWORD = "Naujas293"
-log = open("log.txt", "a")
 
-class Insert:
-    '''Class for inserting data into database tables'''
-
-    def __init__(self, host=HOST, database=DATABASE, user=USER, password=PASSWORD):
-        self.connection = psycopg2.connect(
-            host=host, database=database, user=user, password=password)
-        self.cursor = self.connection.cursor(
-            cursor_factory=psycopg2.extras.RealDictCursor)
-        
-    def category(self, name, description):
-        self.cursor.execute("INSERT INTO Categories (name, description) VALUES (%s, %s)", (name, description))
-        self.connection.commit()
-        print(f"Category with name {name} added to database")
-        log.write(f"{datetime.datetime.now()} Category with name {name} added to database\n")
-
-    def usergroup(self, name, access_level):
-        self.cursor.execute("INSERT INTO UserGroups (name, access_level) VALUES (%s, %s)", (name, access_level))
-        self.connection.commit()
-        print(f"Usergroup with name {name} and access level {access_level} added to database")
-        log.write(f"{datetime.datetime.now()} Usergroup with name {name} and access level {access_level} added to database\n")
-
-    def client(self, firstname, lastname, company, email, phone, address, post_code, note):
-        self.cursor.execute("INSERT INTO Clients (firstname, lastname, company, email, phone, address, post_code, note) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (firstname, lastname, company, email, phone, address, post_code, note))
-        self.connection.commit()
-        print(f"Client with name {firstname} {lastname} added to database")
-        log.write(f"{datetime.datetime.now()} Client with name {firstname} {lastname} added to database\n")
-
-    def supplier(self, company, contact_name, email, phone, address, post_code, note):
-        self.cursor.execute("INSERT INTO Suppliers (company, contact_name, email, phone, address, post_code, note) VALUES (%s, %s, %s, %s, %s, %s, %s)", (company, contact_name, email, phone, address, post_code, note))
-        self.connection.commit()
-        print(f"Supplier with name {company} added to database")
-        log.write(f"{datetime.datetime.now()} Supplier with name {company} added to database\n")
-
-    def user(self, username, password, usergroup_id):
-        self.cursor.execute("INSERT INTO Users (username, password, usergroup_id) VALUES (%s, %s, %s)", (username, password, usergroup_id))
-        self.connection.commit()
-        print(f"User with name {username} added to database")
-        log.write(f"{datetime.datetime.now()} User with name {username} added to database\n")
-
-    def empoyee(self, firstname, lastname, job_title, phone, address, employee_id):
-        self.cursor.execute("INSERT INTO Employers (firstname, lastname, job_title, phone, address, employee_id) VALUES (%s, %s, %s, %s, %s, %s)", (firstname, lastname, job_title, phone, address, employee_id))
-        self.connection.commit()
-        print(f"Employee with name {firstname} {lastname} added to database")
-        log.write(f"{datetime.datetime.now()} Employee with name {firstname} {lastname} added to database\n")
-
-    def product(self, name, description, category_id, quantity, price, supplier_id, note):
-        self.cursor.execute("INSERT INTO Products (name, description, category_id, quantity, price, supplier_id, note) VALUES (%s, %s, %s, %s, %s, %s, %s)", (name, description, category_id, quantity, price, supplier_id, note))
-        self.connection.commit()
-        print(f"Product with name {name} added to database")
-        log.write(f"{datetime.datetime.now()} Product with name {name} added to database\n")
-
-    def sale(self, product_id, quantity, price, sale_date):
-        self.cursor.execute("INSERT INTO Sales (product_id, quantity, price, sale_date) VALUES (%s, %s, %s, %s)", (product_id, quantity, price, sale_date))
-        self.connection.commit()
-        print(f"Sale with product id {product_id} added to database")
-        log.write(f"{datetime.datetime.now()} Sale with product id {product_id} added to database\n")
-
-    def purchase(self, product_id, quantity, price, purchase_date):
-        self.cursor.execute("INSERT INTO Purchases (product_id, quantity, price, purchase_date) VALUES (%s, %s, %s, %s)", (product_id, quantity, price, purchase_date))
-        self.connection.commit()
-        print(f"Purchase with product id {product_id} added to database")
-        log.write(f"{datetime.datetime.now()} Purchase with product id {product_id} added to database\n")
-
-    def order(self, product_id, quantity, order_date, delivery_date):
-        self.cursor.execute("INSERT INTO Orders (product_id, quantity, order_date, delivery_date) VALUES (%s, %s, %s, %s)", (product_id, quantity, order_date, delivery_date))
-        self.connection.commit()
-        print(f"Order with product id {product_id} added to database")
-        log.write(f"{datetime.datetime.now()} Order with product id {product_id} added to database\n")
-
-    def transaction(self, product_id, quantity, transaction_date, transaction_type):
-        self.cursor.execute("INSERT INTO Transactions (product_id, quantity, transaction_date, transaction_type) VALUES (%s, %s, %s, %s)", (product_id, quantity, transaction_date, transaction_type))
-        self.connection.commit()
-        print(f"Transaction with product id {product_id} added to database")
-        log.write(f"{datetime.datetime.now()} Transaction with product id {product_id} added to database\n")
-
-    def invoice(self, client_id, total_amount, invoice_date):
-        self.cursor.execute("INSERT INTO Invoices (client_id, total_amount, invoice_date) VALUES (%s, %s, %s)", (client_id, total_amount, invoice_date))
-        self.connection.commit()
-        print(f"Invoice with client id {client_id} added to database")
-        log.write(f"{datetime.datetime.now()} Invoice with client id {client_id} added to database\n")
-
-    def payment(self, invoice_id, amount, payment_date):
-        self.cursor.execute("INSERT INTO Payments (invoice_id, amount, payment_date) VALUES (%s, %s, %s)", (invoice_id, amount, payment_date))
-        self.connection.commit()
-        print(f"Payment with invoice id {invoice_id} added to database")
-        log.write(f"{datetime.datetime.now()} Payment with invoice id {invoice_id} added to database\n")
-
-class Update:
-    '''Class for updating data in database'''
-
-    def __init__(self, host=HOST, database=DATABASE, user=USER, password=PASSWORD):
-        self.connection = psycopg2.connect(
-            host=host, database=database, user=user, password=password)
-        self.cursor = self.connection.cursor(
-            cursor_factory=psycopg2.extras.RealDictCursor)
-        
-    def category(self, id, name, description):
-        self.cursor.execute("UPDATE Categories SET name = %s, description = %s WHERE id = %s", (name, description, id))
-        self.connection.commit()
-        print(f"Category with id {id} name {name} updated")
-        log.write(f"{datetime.datetime.now()} Category with id {id} name {name} updated\n")
-
-    def client(self, id, company, contact_name, email, phone, address, post_code, note):
-        self.cursor.execute("UPDATE Clients SET company = %s, contact_name = %s, email = %s, phone = %s, address = %s, post_code = %s, note = %s WHERE id = %s", (company, contact_name, email, phone, address, post_code, note, id))
-        self.connection.commit()
-        print(f"Client with id {id} company {company} updated")
-        log.write(f"{datetime.datetime.now()} Client with id {id} company {company} updated\n")
-
-    def supplier(self, id, company, contact_name, email, phone, address, post_code, note):
-        self.cursor.execute("UPDATE Suppliers SET company = %s, contact_name = %s, email = %s, phone = %s, address = %s, post_code = %s, note = %s WHERE id = %s", (company, contact_name, email, phone, address, post_code, note, id))
-        self.connection.commit()
-        print(f"Supplier with id {id} company {company} updated")
-        log.write(f"{datetime.datetime.now()} Supplier with id {id} company {company} updated\n")
-
-    def user(self, id, username, password, usergroup_id):
-        self.cursor.execute("UPDATE Users SET username = %s, password = %s, usergroup_id = %s WHERE id = %s", (username, password, usergroup_id, id))
-        self.connection.commit()
-        print(f"User with id {id} username {username} updated")
-        log.write(f"{datetime.datetime.now()} User with id {id} username {username} updated\n")
-
-    def employee(self, id, firstname, lastname, job_title, phone, address, employee_id):
-        self.cursor.execute("UPDATE Employers SET firstname = %s, lastname = %s, job_title = %s, phone = %s, address = %s, employee_id = %s WHERE id = %s", (firstname, lastname, job_title, phone, address, employee_id, id))
-        self.connection.commit()
-        print(f"Employee with id {id} firstname {firstname} updated")
-        log.write(f"{datetime.datetime.now()} Employee with id {id} firstname {firstname} updated\n")
-
-    def product(self, id, name, description, category_id, quantity, price, supplier_id, note):
-        self.cursor.execute("UPDATE Products SET name = %s, description = %s, category_id = %s, quantity = %s, price = %s, supplier_id = %s, note = %s WHERE id = %s", (name, description, category_id, quantity, price, supplier_id, note, id))
-        self.connection.commit()
-        print(f"Product with id {id} name {name} updated")
-        log.write(f"{datetime.datetime.now()} Product with id {id} name {name} updated\n")
-
-    def sale(self, id, product_id, quantity, price, sale_date):
-        self.cursor.execute("UPDATE Sales SET product_id = %s, quantity = %s, price = %s, sale_date = %s WHERE id = %s", (product_id, quantity, price, sale_date, id))
-        self.connection.commit()
-        print(f"Sale with id {id} product_id {product_id} updated")
-        log.write(f"{datetime.datetime.now()} Sale with id {id} product_id {product_id} updated\n")
-
-    def purchase(self, id, product_id, quantity, price, purchase_date):
-        self.cursor.execute("UPDATE Purchases SET product_id = %s, quantity = %s, price = %s, purchase_date = %s WHERE id = %s", (product_id, quantity, price, purchase_date, id))
-        self.connection.commit()
-        print(f"Purchase with id {id} product_id {product_id} updated")
-        log.write(f"{datetime.datetime.now()} Purchase with id {id} product_id {product_id} updated\n")
-
-    def order(self, id, product_id, quantity, order_date, delivery_date):
-        self.cursor.execute("UPDATE Orders SET product_id = %s, quantity = %s, order_date = %s, delivery_date = %s WHERE id = %s", (product_id, quantity, order_date, delivery_date, id))
-        self.connection.commit()
-        print(f"Order with id {id} product_id {product_id} updated")
-        log.write(f"{datetime.datetime.now()} Order with id {id} product_id {product_id} updated\n")
-
-    def transaction(self, id, product_id, quantity, transaction_date, transaction_type):
-        self.cursor.execute("UPDATE Transactions SET product_id = %s, quantity = %s, transaction_date = %s, transaction_type = %s WHERE id = %s", (product_id, quantity, transaction_date, transaction_type, id))
-        self.connection.commit()
-        print(f"Transaction with id {id} product_id {product_id} updated")
-        log.write(f"{datetime.datetime.now()} Transaction with id {id} product_id {product_id} updated\n")
-
-    def invoice(self, id, client_id, total_amount, invoice_date):
-        self.cursor.execute("UPDATE Invoices SET client_id = %s, total_amount = %s, invoice_date = %s WHERE id = %s", (client_id, total_amount, invoice_date, id))
-        self.connection.commit()
-        print(f"Invoice with id {id} client_id {client_id} updated")
-        log.write(f"{datetime.datetime.now()} Invoice with id {id} client_id {client_id} updated\n")
-
-    def payment(self, id, invoice_id, amount, payment_date):
-        self.cursor.execute("UPDATE Payments SET invoice_id = %s, amount = %s, payment_date = %s WHERE id = %s", (invoice_id, amount, payment_date, id))
-        self.connection.commit()
-        print(f"Payment with id {id} invoice_id {invoice_id} updated")
-        log.write(f"{datetime.datetime.now()} Payment with id {id} invoice_id {invoice_id} updated\n")
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 
-class Delete:
-    '''Class for deleting data from database'''
+class DbManager:
+    def __init__(self):
+        self.user_input = input("Do you want to create new database? (y/n): ")
+        if self.user_input == "y":
+            createdb.init_db(DB_TYPE, HOST, DATABASE, USER, PASSWORD)
+        else:
+            print("Database not created")
 
-    def __init__(self, host=HOST, database=DATABASE, user=USER, password=PASSWORD):
-        self.connection = psycopg2.connect(
-            host=host, database=database, user=user, password=password)
-        self.cursor = self.connection.cursor(
-            cursor_factory=psycopg2.extras.RealDictCursor)
-            
-    def category(self, id):
-        self.cursor.execute("DELETE FROM Categories WHERE id = %s", (id,))
-        self.connection.commit()
-        print(f"Category with id {id} deleted")
-        log.write(f"{datetime.datetime.now()} Category with id {id} deleted\n")
+        # Create connection
+        self.db = QSqlDatabase.addDatabase(DB_TYPE)
+        self.db.setHostName(HOST)
+        self.db.setDatabaseName(DATABASE)
+        self.db.setUserName(USER)
+        self.db.setPassword(PASSWORD)
 
-    def client(self, id):
-        self.cursor.execute("DELETE FROM Clients WHERE id = %s", (id,))
-        self.connection.commit()
-        print(f"Client with id {id} deleted")
-        log.write(f"{datetime.datetime.now()} Client with id {id} deleted\n")
+        if not self.db.open():
+            print("Cannot open database: ", self.db.lastError().text())
+            sys.exit(1)
 
-    def supplier(self, id):
-        self.cursor.execute("DELETE FROM Suppliers WHERE id = %s", (id,))
-        self.connection.commit()
-        print(f"Supplier with id {id} deleted")
-        log.write(f"{datetime.datetime.now()} Supplier with id {id} deleted\n")
+    def __del__(self):
+        self.db.close()
 
-    def user(self, id):
-        self.cursor.execute("DELETE FROM Users WHERE id = %s", (id,))
-        self.connection.commit()
-        print(f"User with id {id} deleted")
-        log.write(f"{datetime.datetime.now()} User with id {id} deleted\n")
-
-    def employee(self, id):
-        self.cursor.execute("DELETE FROM Employers WHERE id = %s", (id,))
-        self.connection.commit()
-        print(f"Employee with id {id} deleted")
-        log.write(f"{datetime.datetime.now()} Employee with id {id} deleted\n")
-
-    def product(self, id):
-        self.cursor.execute("DELETE FROM Products WHERE id = %s", (id,))
-        self.connection.commit()
-        print(f"Product with id {id} deleted")
-        log.write(f"{datetime.datetime.now()} Product with id {id} deleted\n")
-
-    def sale(self, id):
-        self.cursor.execute("DELETE FROM Sales WHERE id = %s", (id,))
-        self.connection.commit()
-        print(f"Sale with id {id} deleted")
-        log.write(f"{datetime.datetime.now()} Sale with id {id} deleted\n")
-
-    def purchase(self, id):
-        self.cursor.execute("DELETE FROM Purchases WHERE id = %s", (id,))
-        self.connection.commit()
-        print(f"Purchase with id {id} deleted")
-        log.write(f"{datetime.datetime.now()} Purchase with id {id} deleted\n")
-
-    def order(self, id):
-        self.cursor.execute("DELETE FROM Orders WHERE id = %s", (id,))
-        self.connection.commit()
-        print(f"Order with id {id} deleted")
-        log.write(f"{datetime.datetime.now()} Order with id {id} deleted\n")
-
-    def transaction(self, id):
-        self.cursor.execute("DELETE FROM Transactions WHERE id = %s", (id,))
-        self.connection.commit()
-        print(f"Transaction with id {id} deleted")
-        log.write(f"{datetime.datetime.now()} Transaction with id {id} deleted\n")
-
-    def invoice(self, id):
-        self.cursor.execute("DELETE FROM Invoices WHERE id = %s", (id,))
-        self.connection.commit()
-        print(f"Invoice with id {id} deleted")
-        log.write(f"{datetime.datetime.now()} Invoice with id {id} deleted\n")
-
-    def payment(self, id):
-        self.cursor.execute("DELETE FROM Payments WHERE id = %s", (id,))
-        self.connection.commit()
-        print(f"Payment with id {id} deleted")
-        log.write(f"{datetime.datetime.now()} Payment with id {id} deleted\n")
-
-
-class Select:
-    '''Class for selecting data from database'''
-
-    def __init__(self, host=HOST, database=DATABASE, user=USER, password=PASSWORD):
-        self.connection = psycopg2.connect(
-            host=host, database=database, user=user, password=password)
-        self.cursor = self.connection.cursor(
-            cursor_factory=psycopg2.extras.RealDictCursor)
-
-    def categories(self):
-        self.cursor.execute("SELECT * FROM Categories")
-        return self.cursor.fetchall()
+    def select_branch(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM branch")
+        return query
+    def select_branch_by_any(self, branch_name, phone, address, post_code):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM branch WHERE branch_name = ? OR phone = ? OR address = ? OR post_code = ?")
+        query.addBindValue(branch_name)
+        query.addBindValue(phone)
+        query.addBindValue(address)
+        query.addBindValue(post_code)
+        query.exec()
+        return query
+    def select_branch_by_id(self, branch_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM branch WHERE id = ?")
+        query.addBindValue(branch_id)
+        query.exec()
+        return query
+    def insert_branch(self, branch_name, phone, address, post_code):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO branch (branch_name, phone, address, post_code) VALUES (?, ?, ?, ?)")
+        query.addBindValue(branch_name)
+        query.addBindValue(phone)
+        query.addBindValue(address)
+        query.addBindValue(post_code)
+        if not query.exec():
+            print("Insert branch error: ", query.lastError().text())
+            return False
+        return True
+    def update_branch(self, branch_id, branch_name, phone, address, post_code):
+        query = QSqlQuery()
+        query.prepare("UPDATE branch SET branch_name = ?, phone = ?, address = ?, post_code = ? WHERE id = ?")
+        query.addBindValue(branch_name)
+        query.addBindValue(phone)
+        query.addBindValue(address)
+        query.addBindValue(post_code)
+        query.addBindValue(branch_id)
+        if not query.exec():
+            print("Update branch error: ", query.lastError().text())
+            return False
+        return True
+    def delete_branch(self, branch_id):
+        query = QSqlQuery()
+        query.prepare("DELETE FROM branch WHERE id = ?")
+        query.addBindValue(branch_id)
+        if not query.exec():
+            print("Delete branch error: ", query.lastError().text())
+            return False
+        return True
     
-    def clients(self):
-        self.cursor.execute("SELECT * FROM Clients")
-        return self.cursor.fetchall()
+    def select_place(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM place")
+        return query
+    def select_place_by_any(self, place_id, place_name, place_barcode, branch_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM place WHERE place_id = ? OR place_name = ? OR place_barcode = ? OR branch_id = ?")
+        query.addBindValue(place_id)
+        query.addBindValue(place_name)
+        query.addBindValue(place_barcode)
+        query.addBindValue(branch_id)
+        query.exec()
+        return query
+    def select_place_by_id(self, place_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM place WHERE id = ?")
+        query.addBindValue(place_id)
+        query.exec()
+        return query
+    def insert_place(self, place_id, place_name, place_barcode, branch_id):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO place (place_id, place_name, place_barcode, branch_id) VALUES (?, ?, ?, ?)")
+        query.addBindValue(place_id)
+        query.addBindValue(place_name)
+        query.addBindValue(place_barcode)
+        query.addBindValue(branch_id)
+        if not query.exec():
+            print("Insert place error: ", query.lastError().text())
+            return False
+        return True
+    def update_place(self, place_id, place_name, place_barcode, branch_id):
+        query = QSqlQuery()
+        query.prepare("UPDATE place SET place_id = ?, place_name = ?, place_barcode = ?, branch_id = ? WHERE id = ?")
+        query.addBindValue(place_id)
+        query.addBindValue(place_name)
+        query.addBindValue(place_barcode)
+        query.addBindValue(branch_id)
+        query.addBindValue(place_id)
+        if not query.exec():
+            print("Update place error: ", query.lastError().text())
+            return False
+        return True
+    def delete_place(self, place_id):
+        query = QSqlQuery()
+        query.prepare("DELETE FROM place WHERE id = ?")
+        query.addBindValue(place_id)
+        if not query.exec():
+            print("Delete place error: ", query.lastError().text())
+            return False
+        return True
     
-    def suppliers(self):
-        self.cursor.execute("SELECT * FROM Suppliers")
-        return self.cursor.fetchall()
+    def select_location(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM location")
+        return query
+    def select_location_by_any(self, location_id, x, y, z, location_barcode, place_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM location WHERE location_id = ? OR x = ? OR y = ? OR z = ? OR location_barcode = ? OR place_id = ?")
+        query.addBindValue(location_id)
+        query.addBindValue(x)
+        query.addBindValue(y)
+        query.addBindValue(z)
+        query.addBindValue(location_barcode)
+        query.addBindValue(place_id)
+        query.exec()
+        return query
+    def select_location_by_id(self, location_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM location WHERE id = ?")
+        query.addBindValue(location_id)
+        query.exec()
+        return query
+    def insert_location(self, location_id, x, y, z, location_barcode, place_id):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO location (location_id, x, y, z, location_barcode, place_id) VALUES (?, ?, ?, ?, ?, ?)")
+        query.addBindValue(location_id)
+        query.addBindValue(x)
+        query.addBindValue(y)
+        query.addBindValue(z)
+        query.addBindValue(location_barcode)
+        query.addBindValue(place_id)
+        if not query.exec():
+            print("Insert location error: ", query.lastError().text())
+            return False
+        return True
+    def update_location(self, location_id, x, y, z, location_barcode, place_id):
+        query = QSqlQuery()
+        query.prepare("UPDATE location SET location_id = ?, x = ?, y = ?, z = ?, location_barcode = ?, place_id = ? WHERE id = ?")
+        query.addBindValue(location_id)
+        query.addBindValue(x)
+        query.addBindValue(y)
+        query.addBindValue(z)
+        query.addBindValue(location_barcode)
+        query.addBindValue(place_id)
+        query.addBindValue(location_id)
+        if not query.exec():
+            print("Update location error: ", query.lastError().text())
+            return False
+        return True
+    def delete_location(self, location_id):
+        query = QSqlQuery()
+        query.prepare("DELETE FROM location WHERE id = ?")
+        query.addBindValue(location_id)
+        if not query.exec():
+            print("Delete location error: ", query.lastError().text())
+            return False
+        return True
     
-    def users(self):
-        self.cursor.execute("SELECT * FROM Users")
-        return self.cursor.fetchall()
+    def select_usergroup(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM usergroup")
+        return query
+    def select_usergroup_by_any(self, group_id, name, access_level):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM usergroup WHERE group_id = ? OR name = ? OR access_level = ?")
+        query.addBindValue(group_id)
+        query.addBindValue(name)
+        query.addBindValue(access_level)
+        query.exec()
+        return query
+    def select_usergroup_by_id(self, group_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM usergroup WHERE id = ?")
+        query.addBindValue(group_id)
+        query.exec()
+        return query
+    def insert_usergroup(self, name, access_level):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO usergroup (name, access_level) VALUES (?, ?, ?)")
+        query.addBindValue(name)
+        query.addBindValue(access_level)
+        if not query.exec():
+            print("Insert usergroup error: ", query.lastError().text())
+            return False
+        return True
+    def update_usergroup(self, group_id, name, access_level):
+        query = QSqlQuery()
+        query.prepare("UPDATE usergroup SET group_id = ?, name = ?, access_level = ? WHERE id = ?")
+        query.addBindValue(group_id)
+        query.addBindValue(name)
+        query.addBindValue(access_level)
+        query.addBindValue(group_id)
+        if not query.exec():
+            print("Update usergroup error: ", query.lastError().text())
+            return False
+        return True
+    def delete_usergroup(self, group_id):
+        query = QSqlQuery()
+        query.prepare("DELETE FROM usergroup WHERE id = ?")
+        query.addBindValue(group_id)
+        if not query.exec():
+            print("Delete usergroup error: ", query.lastError().text())
+            return False
+        return True
     
-    def employees(self):
-        self.cursor.execute("SELECT * FROM Employers")
-        return self.cursor.fetchall()
+    def select_users(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM users")
+        return query
+    def select_users_by_any(self, user_id, username, password, group_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM users WHERE user_id = ? OR username = ? OR password = ? OR group_id = ?")
+        query.addBindValue(user_id)
+        query.addBindValue(username)
+        query.addBindValue(password)
+        query.addBindValue(group_id)
+        query.exec()
+        return query
+    def select_users_by_id(self, user_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM users WHERE id = ?")
+        query.addBindValue(user_id)
+        query.exec()
+        return query
+    def insert_users(self, email, password, group_id):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO users (email, password, group_id) VALUES (?, ?, ?, ?)")
+        query.addBindValue(email)
+        query.addBindValue(password)
+        query.addBindValue(group_id)
+        if not query.exec():
+            print("Insert users error: ", query.lastError().text())
+            return False
+        return True
+    def update_users(self, user_id, username, password, group_id):
+        query = QSqlQuery()
+        query.prepare("UPDATE users SET user_id = ?, username = ?, password = ?, group_id = ? WHERE id = ?")
+        query.addBindValue(user_id)
+        query.addBindValue(username)
+        query.addBindValue(password)
+        query.addBindValue(group_id)
+        query.addBindValue(user_id)
+        if not query.exec():
+            print("Update users error: ", query.lastError().text())
+            return False
+        return True
+    def delete_users(self, user_id):
+        query = QSqlQuery()
+        query.prepare("DELETE FROM users WHERE id = ?")
+        query.addBindValue(user_id)
+        if not query.exec():
+            print("Delete users error: ", query.lastError().text())
+            return False
+        return True
     
-    def products(self):
-        self.cursor.execute("SELECT * FROM Products")
-        return self.cursor.fetchall()
+    def select_category(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM category")
+        return query
+    def select_category_by_any(self, category_id, name, description, place_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM category WHERE category_id = ? OR name = ? OR description = ? OR place_id = ?")
+        query.addBindValue(category_id)
+        query.addBindValue(name)
+        query.addBindValue(description)
+        query.addBindValue(place_id)
+        query.exec()
+        return query
+    def select_category_by_id(self, category_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM category WHERE category_id = ?")
+        query.addBindValue(category_id)
+        query.exec()
+        return query
+    def insert_category(self, name, description, place_id):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO category (name, description, place_id) VALUES (?, ?, ?)")
+        query.addBindValue(name)
+        query.addBindValue(description)
+        query.addBindValue(place_id)
+        if not query.exec():
+            print("Insert category error: ", query.lastError().text())
+            return False
+        return True
+    def update_category(self, category_id, name, description, place_id):
+        query = QSqlQuery()
+        query.prepare("UPDATE category SET name = ?, description = ?, place_id = ? WHERE category_id = ?")
+        query.addBindValue(name)
+        query.addBindValue(description)
+        query.addBindValue(place_id)
+        query.addBindValue(category_id)
+        if not query.exec():
+            print("Update category error: ", query.lastError().text())
+            return False
+        return True
+    def delete_category(self, category_id):
+        query = QSqlQuery()
+        query.prepare("DELETE FROM category WHERE category_id = ?")
+        query.addBindValue(category_id)
+        if not query.exec():
+            print("Delete category error: ", query.lastError().text())
+            return False
+        return True
     
-    def sales(self):
-        self.cursor.execute("SELECT * FROM Sales")
-        return self.cursor.fetchall()
+    def select_subcategory(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM subcategory")
+        return query
+    def select_subcategory_by_any(self, subcategory_id, category_id, name, description, location_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM subcategory WHERE subcategory_id = ? OR category_id = ? OR name = ? OR description = ? OR location_id = ?")
+        query.addBindValue(subcategory_id)
+        query.addBindValue(category_id)
+        query.addBindValue(name)
+        query.addBindValue(description)
+        query.addBindValue(location_id)
+        query.exec()
+        return query
+    def select_subcategory_by_id(self, subcategory_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM subcategory WHERE subcategory_id = ?")
+        query.addBindValue(subcategory_id)
+        query.exec()
+        return query
+    def insert_subcategory(self, category_id, name, description, location_id):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO subcategory (category_id, name, description, location_id) VALUES (?, ?, ?, ?)")
+        query.addBindValue(category_id)
+        query.addBindValue(name)
+        query.addBindValue(description)
+        query.addBindValue(location_id)
+        if not query.exec():
+            print("Insert subcategory error: ", query.lastError().text())
+            return False
+        return True
+    def update_subcategory(self, subcategory_id, category_id, name, description, location_id):
+        query = QSqlQuery()
+        query.prepare("UPDATE subcategory SET category_id = ?, name = ?, description = ?, location_id = ? WHERE subcategory_id = ?")
+        query.addBindValue(category_id)
+        query.addBindValue(name)
+        query.addBindValue(description)
+        query.addBindValue(location_id)
+        query.addBindValue(subcategory_id)
+        if not query.exec():
+            print("Update subcategory error: ", query.lastError().text())
+            return False
+        return True
+    def delete_subcategory(self, subcategory_id):
+        query = QSqlQuery()
+        query.prepare("DELETE FROM subcategory WHERE subcategory_id = ?")
+        query.addBindValue(subcategory_id)
+        if not query.exec():
+            print("Delete subcategory error: ", query.lastError().text())
+            return False
+        return True
     
-    def purchases(self):
-        self.cursor.execute("SELECT * FROM Purchases")
-        return self.cursor.fetchall()
+    def select_clients(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM clients")
+        return query
+    def select_clients_by_any(self, id, firstname, lastname, conpany, email, phone, address, post_code, note):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM clients WHERE id = ? OR firstname = ? OR lastname = ? OR conpany = ? OR email = ? OR phone = ? OR address = ? OR post_code = ? OR note = ?")
+        query.addBindValue(id)
+        query.addBindValue(firstname)
+        query.addBindValue(lastname)
+        query.addBindValue(conpany)
+        query.addBindValue(email)
+        query.addBindValue(phone)
+        query.addBindValue(address)
+        query.addBindValue(post_code)
+        query.addBindValue(note)
+        query.exec()
+        return query
+    def select_clients_by_id(self, id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM clients WHERE id = ?")
+        query.addBindValue(id)
+        query.exec()
+        return query
+    def insert_clients(self, firstname, lastname, conpany, email, phone, address, post_code, note):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO clients (firstname, lastname, conpany, email, phone, address, post_code, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+        query.addBindValue(firstname)
+        query.addBindValue(lastname)
+        query.addBindValue(conpany)
+        query.addBindValue(email)
+        query.addBindValue(phone)
+        query.addBindValue(address)
+        query.addBindValue(post_code)
+        query.addBindValue(note)
+        if not query.exec():
+            print("Insert clients error: ", query.lastError().text())
+            return False
+        return True
+    def update_clients(self, id, firstname, lastname, conpany, email, phone, address, post_code, note):
+        query = QSqlQuery()
+        query.prepare("UPDATE clients SET firstname = ?, lastname = ?, conpany = ?, email = ?, phone = ?, address = ?, post_code = ?, note = ? WHERE id = ?")
+        query.addBindValue(firstname)
+        query.addBindValue(lastname)
+        query.addBindValue(conpany)
+        query.addBindValue(email)
+        query.addBindValue(phone)
+        query.addBindValue(address)
+        query.addBindValue(post_code)
+        query.addBindValue(note)
+        query.addBindValue(id)
+        if not query.exec():
+            print("Update clients error: ", query.lastError().text())
+            return False
+        return True
+    def delete_clients(self, id):
+        query = QSqlQuery()
+        query.prepare("DELETE FROM clients WHERE id = ?")
+        query.addBindValue(id)
+        if not query.exec():
+            print("Delete clients error: ", query.lastError().text())
+            return False
+        return True
     
-    def orders(self):
-        self.cursor.execute("SELECT * FROM Orders")
-        return self.cursor.fetchall()
+    def select_employee(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM employee")
+        return query
+    def select_employee_by_any(self, id, firstname, lastname, job_title, phone, address, post_code, user_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM employee WHERE id = ? OR firstname = ? OR lastname = ? OR job_title = ? OR phone = ? OR address = ? OR post_code = ? OR user_id = ?")
+        query.addBindValue(id)
+        query.addBindValue(firstname)
+        query.addBindValue(lastname)
+        query.addBindValue(job_title)
+        query.addBindValue(phone)
+        query.addBindValue(address)
+        query.addBindValue(post_code)
+        query.addBindValue(user_id)
+        query.exec()
+        return query
+    def select_employee_by_id(self, id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM employee WHERE id = ?")
+        query.addBindValue(id)
+        query.exec()
+        return query
+    def insert_employee(self, firstname, lastname, job_title, phone, address, post_code, user_id):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO employee (firstname, lastname, job_title, phone, address, post_code, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)")
+        query.addBindValue(firstname)
+        query.addBindValue(lastname)
+        query.addBindValue(job_title)
+        query.addBindValue(phone)
+        query.addBindValue(address)
+        query.addBindValue(post_code)
+        query.addBindValue(user_id)
+        if not query.exec():
+            print("Insert employee error: ", query.lastError().text())
+            return False
+        return True
+    def update_employee(self, id, firstname, lastname, job_title, phone, address, post_code, user_id):
+        query = QSqlQuery()
+        query.prepare("UPDATE employee SET firstname = ?, lastname = ?, job_title = ?, phone = ?, address = ?, post_code = ?, user_id = ? WHERE id = ?")
+        query.addBindValue(firstname)
+        query.addBindValue(lastname)
+        query.addBindValue(job_title)
+        query.addBindValue(phone)
+        query.addBindValue(address)
+        query.addBindValue(post_code)
+        query.addBindValue(user_id)
+        query.addBindValue(id)
+        if not query.exec():
+            print("Update employee error: ", query.lastError().text())
+            return False
+        return True
+    def delete_employee(self, id):
+        query = QSqlQuery()
+        query.prepare("DELETE FROM employee WHERE id = ?")
+        query.addBindValue(id)
+        if not query.exec():
+            print("Delete employee error: ", query.lastError().text())
+            return False
+        return True
     
-    def transactions(self):
-        self.cursor.execute("SELECT * FROM Transactions")
-        return self.cursor.fetchall()
+    def select_supplier(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM supplier")
+        return query
+    def select_supplier_by_any(self, id, company, contact_name, email, phone, address, post_code, note):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM supplier WHERE id = ? OR company = ? OR contact_name = ? OR email = ? OR phone = ? OR address = ? OR post_code = ? OR note = ?")
+        query.addBindValue(id)
+        query.addBindValue(company)
+        query.addBindValue(contact_name)
+        query.addBindValue(email)
+        query.addBindValue(phone)
+        query.addBindValue(address)
+        query.addBindValue(post_code)
+        query.addBindValue(note)
+        query.exec()
+        return query
+    def select_supplier_by_id(self, id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM supplier WHERE id = ?")
+        query.addBindValue(id)
+        query.exec()
+        return query
+    def insert_supplier(self, company, contact_name, email, phone, address, post_code, note):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO supplier (company, contact_name, email, phone, address, post_code, note) VALUES (?, ?, ?, ?, ?, ?, ?)")
+        query.addBindValue(company)
+        query.addBindValue(contact_name)
+        query.addBindValue(email)
+        query.addBindValue(phone)
+        query.addBindValue(address)
+        query.addBindValue(post_code)
+        query.addBindValue(note)
+        if not query.exec():
+            print("Insert supplier error: ", query.lastError().text())
+            return False
+        return True
+    def update_supplier(self, id, company, contact_name, email, phone, address, post_code, note):
+        query = QSqlQuery()
+        query.prepare("UPDATE supplier SET company = ?, contact_name = ?, email = ?, phone = ?, address = ?, post_code = ?, note = ? WHERE id = ?")
+        query.addBindValue(company)
+        query.addBindValue(contact_name)
+        query.addBindValue(email)
+        query.addBindValue(phone)
+        query.addBindValue(address)
+        query.addBindValue(post_code)
+        query.addBindValue(note)
+        query.addBindValue(id)
+        if not query.exec():
+            print("Update supplier error: ", query.lastError().text())
+            return False
+        return True
+    def delete_supplier(self, id):
+        query = QSqlQuery()
+        query.prepare("DELETE FROM supplier WHERE id = ?")
+        query.addBindValue(id)
+        if not query.exec():
+            print("Delete supplier error: ", query.lastError().text())
+            return False
+        return True
     
-    def invoices(self):
-        self.cursor.execute("SELECT * FROM Invoices")
-        return self.cursor.fetchall()
+    def select_product(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM product")
+        return query
+    def select_product_by_any(self, id, barcode, name, description, subcategory_id, quanity, price, supplier_id, note):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM product WHERE id = ? OR barcode = ? OR name = ? OR description = ? OR subcategory_id = ? OR quanity = ? OR price = ? OR supplier_id = ? OR note = ?")
+        query.addBindValue(id)
+        query.addBindValue(barcode)
+        query.addBindValue(name)
+        query.addBindValue(description)
+        query.addBindValue(subcategory_id)
+        query.addBindValue(quanity)
+        query.addBindValue(price)
+        query.addBindValue(supplier_id)
+        query.addBindValue(note)
+        query.exec()
+        return query
+    def select_product_by_id(self, id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM product WHERE id = ?")
+        query.addBindValue(id)
+        query.exec()
+        return query
+    def insert_product(self, barcode, name, description, subcategory_id, quanity, price, supplier_id, note):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO product (barcode, name, description, subcategory_id, quanity, price, supplier_id, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+        query.addBindValue(barcode)
+        query.addBindValue(name)
+        query.addBindValue(description)
+        query.addBindValue(subcategory_id)
+        query.addBindValue(quanity)
+        query.addBindValue(price)
+        query.addBindValue(supplier_id)
+        query.addBindValue(note)
+        if not query.exec():
+            print("Insert product error: ", query.lastError().text())
+            return False
+        return True
+    def update_product(self, id, barcode, name, description, subcategory_id, quanity, price, supplier_id, note):
+        query = QSqlQuery()
+        query.prepare("UPDATE product SET barcode = ?, name = ?, description = ?, subcategory_id = ?, quanity = ?, price = ?, supplier_id = ?, note = ? WHERE id = ?")
+        query.addBindValue(barcode)
+        query.addBindValue(name)
+        query.addBindValue(description)
+        query.addBindValue(subcategory_id)
+        query.addBindValue(quanity)
+        query.addBindValue(price)
+        query.addBindValue(supplier_id)
+        query.addBindValue(note)
+        query.addBindValue(id)
+        if not query.exec():
+            print("Update product error: ", query.lastError().text())
+            return False
+        return True
+    def delete_product(self, id):
+        query = QSqlQuery()
+        query.prepare("DELETE FROM product WHERE id = ?")
+        query.addBindValue(id)
+        if not query.exec():
+            print("Delete product error: ", query.lastError().text())
+            return False
+        return True
     
-    def payments(self):
-        self.cursor.execute("SELECT * FROM Payments")
-        return self.cursor.fetchall()
+    def select_purchase(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM purchase")
+        return query
+    def select_purchase_by_any(self, id, product_id, quanity, purchase_date, supplier_id, employee_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM purchase WHERE id = ? OR product_id = ? OR quanity = ? OR purchase_date = ? OR supplier_id = ? OR employee_id = ?")
+        query.addBindValue(id)
+        query.addBindValue(product_id)
+        query.addBindValue(quanity)
+        query.addBindValue(purchase_date)
+        query.addBindValue(supplier_id)
+        query.addBindValue(employee_id)
+        query.exec()
+        return query
+    def select_purchase_by_id(self, id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM purchase WHERE id = ?")
+        query.addBindValue(id)
+        query.exec()
+        return query
+    def insert_purchase(self, product_id, quanity, purchase_date, supplier_id, employee_id):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO purchase (product_id, quanity, purchase_date, supplier_id, employee_id) VALUES (?, ?, ?, ?, ?)")
+        query.addBindValue(product_id)
+        query.addBindValue(quanity)
+        query.addBindValue(purchase_date)
+        query.addBindValue(supplier_id)
+        query.addBindValue(employee_id)
+        if not query.exec():
+            print("Insert purchase error: ", query.lastError().text())
+            return False
+        return True
+    def update_purchase(self, id, product_id, quanity, purchase_date, supplier_id, employee_id):
+        query = QSqlQuery()
+        query.prepare("UPDATE purchase SET product_id = ?, quanity = ?, purchase_date = ?, supplier_id = ?, employee_id = ? WHERE id = ?")
+        query.addBindValue(product_id)
+        query.addBindValue(quanity)
+        query.addBindValue(purchase_date)
+        query.addBindValue(supplier_id)
+        query.addBindValue(employee_id)
+        query.addBindValue(id)
+        if not query.exec():
+            print("Update purchase error: ", query.lastError().text())
+            return False
+        return True
+    def delete_purchase(self, id):
+        query = QSqlQuery()
+        query.prepare("DELETE FROM purchase WHERE id = ?")
+        query.addBindValue(id)
+        if not query.exec():
+            print("Delete purchase error: ", query.lastError().text())
+            return False
+        return True
     
+    def select_stock(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM stock")
+        return query
+    def select_stock_by_any(self, stock_id, product_id, category_id, subcategory_id, location_id, supplier_id, purchase_id, employee_id, quantity, cost_price, selling_price, barcode):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM stock WHERE stock_id = ? OR product_id = ? OR category_id = ? OR subcategory_id = ? OR location_id = ? OR supplier_id = ? OR purchase_id = ? OR employee_id = ? OR quantity = ? OR cost_price = ? OR selling_price = ? OR barcode = ?")
+        query.addBindValue(stock_id)
+        query.addBindValue(product_id)
+        query.addBindValue(category_id)
+        query.addBindValue(subcategory_id)
+        query.addBindValue(location_id)
+        query.addBindValue(supplier_id)
+        query.addBindValue(purchase_id)
+        query.addBindValue(employee_id)
+        query.addBindValue(quantity)
+        query.addBindValue(cost_price)
+        query.addBindValue(selling_price)
+        query.addBindValue(barcode)
+        query.exec()
+        return query
+    def select_stock_by_id(self, stock_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM stock WHERE stock_id = ?")
+        query.addBindValue(stock_id)
+        query.exec()
+        return query
+    def insert_stock(self, product_id, category_id, subcategory_id, location_id, supplier_id, purchase_id, employee_id, quantity, cost_price, selling_price, barcode):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO stock (product_id, category_id, subcategory_id, location_id, supplier_id, purchase_id, employee_id, quantity, cost_price, selling_price, barcode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+        query.addBindValue(product_id)
+        query.addBindValue(category_id)
+        query.addBindValue(subcategory_id)
+        query.addBindValue(location_id)
+        query.addBindValue(supplier_id)
+        query.addBindValue(purchase_id)
+        query.addBindValue(employee_id)
+        query.addBindValue(quantity)
+        query.addBindValue(cost_price)
+        query.addBindValue(selling_price)
+        query.addBindValue(barcode)
+        if not query.exec():
+            print("Insert stock error: ", query.lastError().text())
+            return False
+        return True
+    def update_stock(self, stock_id, product_id, category_id, subcategory_id, location_id, supplier_id, purchase_id, employee_id, quantity, cost_price, selling_price, barcode):
+        query = QSqlQuery()
+        query.prepare("UPDATE stock SET product_id = ?, category_id = ?, subcategory_id = ?, location_id = ?, supplier_id = ?, purchase_id = ?, employee_id = ?, quantity = ?, cost_price = ?, selling_price = ?, barcode = ? WHERE stock_id = ?")
+        query.addBindValue(product_id)
+        query.addBindValue(category_id)
+        query.addBindValue(subcategory_id)
+        query.addBindValue(location_id)
+        query.addBindValue(supplier_id)
+        query.addBindValue(purchase_id)
+        query.addBindValue(employee_id)
+        query.addBindValue(quantity)
+        query.addBindValue(cost_price)
+        query.addBindValue(selling_price)
+        query.addBindValue(barcode)
+        query.addBindValue(stock_id)
+        if not query.exec():
+            print("Update stock error: ", query.lastError().text())
+            return False
+        return True
+    def delete_stock(self, stock_id):
+        query = QSqlQuery()
+        query.prepare("DELETE FROM stock WHERE stock_id = ?")
+        query.addBindValue(stock_id)
+        if not query.exec():
+            print("Delete stock error: ", query.lastError().text())
+            return False
+        return True
+    
+    def select_sale(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM sale")
+        return query
+    def select_sale_by_any(self, id, product_id, quantity, sale_date, client_id, employee_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM sale WHERE id = ? OR product_id = ? OR quantity = ? OR sale_date = ? OR client_id = ? OR employee_id = ?")
+        query.addBindValue(id)
+        query.addBindValue(product_id)
+        query.addBindValue(quantity)
+        query.addBindValue(sale_date)
+        query.addBindValue(client_id)
+        query.addBindValue(employee_id)
+        query.exec()
+        return query
+    def select_sale_by_id(self, id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM sale WHERE id = ?")
+        query.addBindValue(id)
+        query.exec()
+        return query
+    def insert_sale(self, product_id, quantity, sale_date, client_id, employee_id):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO sale (product_id, quantity, sale_date, client_id, employee_id) VALUES (?, ?, ?, ?, ?)")
+        query.addBindValue(product_id)
+        query.addBindValue(quantity)
+        query.addBindValue(sale_date)
+        query.addBindValue(client_id)
+        query.addBindValue(employee_id)
+        if not query.exec():
+            print("Insert sale error: ", query.lastError().text())
+            return False
+        return True
+    def update_sale(self, id, product_id, quantity, sale_date, client_id, employee_id):
+        query = QSqlQuery()
+        query.prepare("UPDATE sale SET product_id = ?, quantity = ?, sale_date = ?, client_id = ?, employee_id = ? WHERE id = ?")
+        query.addBindValue(product_id)
+        query.addBindValue(quantity)
+        query.addBindValue(sale_date)
+        query.addBindValue(client_id)
+        query.addBindValue(employee_id)
+        query.addBindValue(id)
+        if not query.exec():
+            print("Update sale error: ", query.lastError().text())
+            return False
+        return True
+    def delete_sale(self, id):
+        query = QSqlQuery()
+        query.prepare("DELETE FROM sale WHERE id = ?")
+        query.addBindValue(id)
+        if not query.exec():
+            print("Delete sale error: ", query.lastError().text())
+            return False
+        return True
 
-    def category(self, id):
-        self.cursor.execute("SELECT * FROM Categories WHERE id = %s", (id,))
-        return self.cursor.fetchone()
-    
-    def client(self, id):
-        self.cursor.execute("SELECT * FROM Clients WHERE id = %s", (id,))
-        return self.cursor.fetchone()
-    
-    def supplier(self, id):
-        self.cursor.execute("SELECT * FROM Suppliers WHERE id = %s", (id,))
-        return self.cursor.fetchone()
-    
-    def user(self, id):
-        self.cursor.execute("SELECT * FROM Users WHERE id = %s", (id,))
-        return self.cursor.fetchone()
-    
-    def employee(self, id):
-        self.cursor.execute("SELECT * FROM Employers WHERE id = %s", (id,))
-        return self.cursor.fetchone()
-    
-    def product(self, id):
-        self.cursor.execute("SELECT * FROM Products WHERE id = %s", (id,))
-        return self.cursor.fetchone()
-    
-    def sale(self, id):
-        self.cursor.execute("SELECT * FROM Sales WHERE id = %s", (id,))
-        return self.cursor.fetchone()
-    
-    def purchase(self, id):
-        self.cursor.execute("SELECT * FROM Purchases WHERE id = %s", (id,))
-        return self.cursor.fetchone()
-    
-    def order(self, id):
-        self.cursor.execute("SELECT * FROM Orders WHERE id = %s", (id,))
-        return self.cursor.fetchone()
-    
-    def transaction(self, id):
-        self.cursor.execute("SELECT * FROM Transactions WHERE id = %s", (id,))
-        return self.cursor.fetchone()
-    
-    def invoice(self, id):
-        self.cursor.execute("SELECT * FROM Invoices WHERE id = %s", (id,))
-        return self.cursor.fetchone()
-    
-    def payment(self, id):
-        self.cursor.execute("SELECT * FROM Payments WHERE id = %s", (id,))
-        return self.cursor.fetchone()
-    
-
-    def category_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Categories WHERE %s = %s", (column, value))
-        return self.cursor.fetchone()
-    
-    def client_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Clients WHERE %s = %s", (column, value))
-        return self.cursor.fetchone()
-    
-    def supplier_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Suppliers WHERE %s = %s", (column, value))
-        return self.cursor.fetchone()
-    
-    def user_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Users WHERE %s = %s", (column, value))
-        return self.cursor.fetchone()
-    
-    def employee_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Employers WHERE %s = %s", (column, value))
-        return self.cursor.fetchone()
-    
-    def product_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Products WHERE %s = %s", (column, value))
-        return self.cursor.fetchone()
-    
-    def sale_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Sales WHERE %s = %s", (column, value))
-        return self.cursor.fetchone()
-    
-    def purchase_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Purchases WHERE %s = %s", (column, value))
-        return self.cursor.fetchone()
-    
-    def order_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Orders WHERE %s = %s", (column, value))
-        return self.cursor.fetchone()
-    
-    def transaction_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Transactions WHERE %s = %s", (column, value))
-        return self.cursor.fetchone()
-    
-    def invoice_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Invoices WHERE %s = %s", (column, value))
-        return self.cursor.fetchone()
-    
-    def payment_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Payments WHERE %s = %s", (column, value))
-        return self.cursor.fetchone()
-    
-
-    def categories_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Categories WHERE %s = %s", (column, value))
-        return self.cursor.fetchall()
-    
-    def clients_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Clients WHERE %s = %s", (column, value))
-        return self.cursor.fetchall()
-    
-    def suppliers_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Suppliers WHERE %s = %s", (column, value))
-        return self.cursor.fetchall()
-    
-    def users_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Users WHERE %s = %s", (column, value))
-        return self.cursor.fetchall()
-    
-    def employees_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Employers WHERE %s = %s", (column, value))
-        return self.cursor.fetchall()
-    
-    def products_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Products WHERE %s = %s", (column, value))
-        return self.cursor.fetchall()
-    
-    def sales_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Sales WHERE %s = %s", (column, value))
-        return self.cursor.fetchall()
-    
-    def purchases_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Purchases WHERE %s = %s", (column, value))
-        return self.cursor.fetchall()
-    
-    def orders_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Orders WHERE %s = %s", (column, value))
-        return self.cursor.fetchall()
-    
-    def transactions_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Transactions WHERE %s = %s", (column, value))
-        return self.cursor.fetchall()
-    
-    def invoices_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Invoices WHERE %s = %s", (column, value))
-        return self.cursor.fetchall()
-    
-    def payments_by(self, column, value):
-        self.cursor.execute("SELECT * FROM Payments WHERE %s = %s", (column, value))
-        return self.cursor.fetchall()
-    
-
-insert = Insert()
-insert.category("Test2", "Food")
+# Test get_all_branch
+db = DbManager()
+db.insert_branch("test", "test", "test", "test")
