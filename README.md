@@ -263,4 +263,4 @@ The `ui` folder contains all the user interface components of the application. I
 
 ## Conclusion
 
-WMS is a Warehouse Management System that provides a user-friendly interface to manage all the warehouse-related tasks. It is implemented in Python and uses PySide6.QtSql and other PySide6 modules for future UI for the Warehouse Management System.
+WMS is a Warehouse Management System that provides a user-friendly interface to manage all the warehouse-related tasks. It is implemented in Python and uses PySide6.QtSql and other PySide6 modules for future UI for the Warehouse Management System.,
