@@ -22,7 +22,7 @@ class CRUD:
             columns.append(record.fieldName(i))
         return columns
     
-    def place_columns(self):
+    def place_columns():
         # Get from table Place all columns
         query = QSqlQuery()
         query.exec("SELECT * FROM place")
