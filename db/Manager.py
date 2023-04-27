@@ -20,23 +20,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 
 class DbManager:
-    def __init__(self):
-        self.user_input = input("Do you want to create new database? (y/n): ")
-        if self.user_input == "y":
-            createdb.init_db(DB_TYPE, HOST, DATABASE, USER, PASSWORD)
-        else:
-            print("Database not created")
-
-        # Create connection
-        self.db = QSqlDatabase.addDatabase(DB_TYPE)
-        self.db.setHostName(HOST)
-        self.db.setDatabaseName(DATABASE)
-        self.db.setUserName(USER)
-        self.db.setPassword(PASSWORD)
-
-        if not self.db.open():
-            print("Cannot open database: ", self.db.lastError().text())
-            sys.exit(1)
+    
 
     def __del__(self):
         self.db.close()

@@ -1,0 +1,36 @@
+# Add project path to sys
+import sys
+import os
+
+from wms.db.CRUD import CRUD
+
+class UserGroup(CRUD):
+    def __init__(self, db):
+        super().__init__(db)
+
+    def create(self, name, access_level):
+        self.name = name
+        self.access_level = access_level
+        super().create("user_group", f"('{self.name}', {self.access_level})")
+
+    def read(self, group_id):
+        super().read("user_group", group_id)
+
+    def read_all(self):
+        super().read_all("user_group")
+
+    def update(self, group_id, name, access_level):
+        self.group_id = group_id
+        self.name = name
+        self.access_level = access_level
+        super().update("user_group", self.group_id, f"name = '{self.name}', access_level = {self.access_level}")
+
+    def delete(self, group_id):
+        super().delete("user_group", group_id)
+        
+# Test
+from wms.db import Database
+db = Database()
+ug = UserGroup(db)
+ug.create("test", 1)
+ug.read_all()
