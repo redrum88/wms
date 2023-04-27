@@ -14,7 +14,7 @@ DB_TYPE = "QPSQL"
 HOST = "localhost"
 DATABASE = "my_database"
 USER = "postgres"
-PASSWORD = "Naujas293"
+PASSWORD = "my_password"
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 

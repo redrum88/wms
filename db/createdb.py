@@ -624,3 +624,5 @@ def init_db(DB_TYPE="QPSQL", HOSTNAME="localhost", DATABASE="", USERNAME="postgr
     print("Default sales added successfully")
 
     print("Default data added successfully")
+
+
