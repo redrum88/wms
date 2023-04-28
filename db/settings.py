@@ -13,6 +13,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 class DB:
 
+    def __version__(self):
+        return "0.1"
+
     def __init__(self):
         # Create connection
         self.db = QSqlDatabase.addDatabase(DB_TYPE)
