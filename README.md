@@ -21,104 +21,123 @@ WMS is a Warehouse Management System implemented in Python. The project has been
     * Document the **GUI**'s functionality and architecture to aid in maintenance and future development.
 
 2. Implement **CRUD** (create, read, update, delete) functionality for each table in the database, including `Branch`, `Place`, `Location`, `UserGroup`, `Users`, `Category`, `SubCategory`, `Clients`, `Employee`, `Supplier`, `Product`, `Purchase`, `Stock`, and `Sale`.
-  * Branch:
-    * Implement a UI form for creating a new branch
-    * Implement a function for adding a new branch to the database
-    * Implement a UI form for viewing all branches in the database
-    * Implement a function for fetching all branches from the database and displaying them in the UI
-    * Implement a UI form for updating an existing branch
-    * Implement a function for updating a branch in the database
-    * Implement a UI form for deleting a branch
-    * Implement a function for deleting a branch from the database
-  * Place:
-    * Implement a UI form for creating a new place
-    * Implement a function for adding a new place to the database
-    * Implement a UI form for viewing all places in the database
-    * Implement a function for fetching all places from the database and displaying them in the UI
-    * Implement a UI form for updating an existing place
-    * Implement a function for updating a place in the database
-    * Implement a UI form for deleting a place
-    * Implement a function for deleting a place from the database
-  * Location:
-    * Implement a UI form for creating a new location
-    * Implement a function for adding a new location to the database
-    * Implement a UI form for viewing all locations in the database
-    * Implement a function for fetching all locations from the database and displaying them in the UI
-    * Implement a UI form for updating an existing location
-    * Implement a function for updating a location in the database
-    * Implement a UI form for deleting a location
-    * Implement a function for deleting a location from the database
-  * UserGroup:
-    * Implement a UI form for creating a new user group
-    * Implement a function for adding a new user group to the database
-    * Implement a UI form for viewing all user groups in the database
-    * Implement a function for fetching all user groups from the database and displaying them in the UI
-    * Implement a UI form for updating an existing user group
-    * Implement a function for updating a user group in the database
-    * Implement a UI form for deleting a user group
-    * Implement a function for deleting a user group from the database
-  * Users:
-    * Implement a UI form for creating a new user
-    * Implement a function for adding a new user to the database
-    * Implement a UI form for viewing all users in the database
-    * Implement a function for fetching all users from the database and displaying them in the UI
-    * Implement a UI form for updating an existing user
-    * Implement a function for updating a user in the database
-    * Implement a UI form for deleting a user
-    * Implement a function for deleting a user from the database
-  * Category:
-    * Implement a UI form for creating a new category
-    * Implement a function for adding a new category to the database
-    * Implement a UI form for viewing all categories in the database
-    * Implement a function for fetching all categories from the database and displaying them in the UI
-    * Implement a UI form for updating an existing category
-    * Implement a function for updating a category in the database
-    * Implement a UI form for deleting a category
-    * Implement a function for deleting a category from the database
-  * SubCategory:
-    * Implement a UI form for creating a new subcategory
-    * Implement a function for adding a new subcategory to the database
-    * Implement a UI form for viewing all subcategories in the database
-    * Implement a function for fetching all subcategories from the database and displaying them in the UI
-    * Implement a UI form for updating an existing subcategory
-    * Implement a function for updating a subcategory in the database
-    * Implement a UI form for deleting a subcategory
-    * Implement a function for deleting a subcategory from the database
-  * Clients:
-    * Implement functionality to create a new client.
-    * Implement functionality to read client information by their ID.
-    * Implement functionality to update client information by their ID.
-    * Implement functionality to delete a client by their ID.
-  * Employee:
-    * Implement functionality to create a new employee.
-    * Implement functionality to read employee information by their ID.
-    * Implement functionality to update employee information by their ID.
-    * Implement functionality to delete an employee by their ID.
-  * Supplier:
-    * Implement functionality to create a new supplier.
-    * Implement functionality to read supplier information by their ID.
-    * Implement functionality to update supplier information by their ID.
-    * Implement functionality to delete a supplier by their ID.
-  * Product:
-    * Implement functionality to create a new product.
-    * Implement functionality to read product information by its ID.
-    * Implement functionality to update product information by its ID.
-    * Implement functionality to delete a product by its ID.
-  * Purchase:
-    * Implement functionality to create a new purchase record.
-    * Implement functionality to read purchase information by its ID.
-    * Implement functionality to update purchase information by its ID.
-    * Implement functionality to delete a purchase record by its ID.
-  * Stock:
-    * Implement functionality to create a new stock entry.
-    * Implement functionality to read stock information by its ID.
-    * Implement functionality to update stock information by its ID.
-    * Implement functionality to delete a stock entry by its ID.
-  * Sale:
-    * Implement functionality to create a new sale record.
-    * Implement functionality to read sale information by its ID.
-    * Implement functionality to update sale information by its ID.
-    * Implement functionality to delete a sale record by its ID.
+   1. Branch:
+       * Implement a UI form for creating a new branch
+       * ✅Implement a function for adding a new branch to the database
+            * `create_branch(branch_name, phone, address, post_code)`
+       * Implement a UI form for viewing all branches in the database
+       * ✅Implement a function for fetching all branches from the database and displaying them in the UI
+            * `read_branch()`
+       * Implement a UI form for updating an existing branch
+       * ✅Implement a function for updating a branch in the database
+            * `update_branch(branch_id, branch_name, phone, address, post_code)`
+       * Implement a UI form for deleting a branch
+       * ✅Implement a function for deleting a branch from the database
+            * `delete_branch(branch_id)`
+       * Extras
+            * `read_branch_by_id()`
+            * `read_branch_by_any()`
+            * `get_last_branch_id()`
+            * `remove_last_branch()`
+            
+    2. Place:
+       * Implement a UI form for creating a new place
+       * ✅Implement a function for adding a new place to the database
+            * `create_place(place_name, place_barcode, description, branch_id)`
+       * Implement a UI form for viewing all places in the database
+       * ✅Implement a function for fetching all places from the database and displaying them in the UI
+            * `read_place()`
+       * Implement a UI form for updating an existing place
+       * ✅Implement a function for updating a place in the database
+            * `update_place(place_id, place_name, place_barcode, description, branch_id)`
+       * Implement a UI form for deleting a place
+       * ✅Implement a function for deleting a place from the database
+            * `delete_place(place_id)`
+       * Extras
+            * `read_place_by_any(column, value)`
+            * `read_place_by_id(place_id)`
+            * `get_last_place_id()`
+            * `remove_last_place()`
+     * Location:
+       * Implement a UI form for creating a new location
+       * Implement a function for adding a new location to the database
+       * Implement a UI form for viewing all locations in the database
+       * Implement a function for fetching all locations from the database and displaying them in the UI
+       * Implement a UI form for updating an existing location
+       * Implement a function for updating a location in the database
+       * Implement a UI form for deleting a location
+       * Implement a function for deleting a location from the database
+     * UserGroup:
+       * Implement a UI form for creating a new user group
+       * Implement a function for adding a new user group to the database
+       * Implement a UI form for viewing all user groups in the database
+       * Implement a function for fetching all user groups from the database and displaying them in the UI
+       * Implement a UI form for updating an existing user group
+       * Implement a function for updating a user group in the database
+       * Implement a UI form for deleting a user group
+       * Implement a function for deleting a user group from the database
+     * Users:
+       * Implement a UI form for creating a new user
+       * Implement a function for adding a new user to the database
+       * Implement a UI form for viewing all users in the database
+       * Implement a function for fetching all users from the database and displaying them in the UI
+       * Implement a UI form for updating an existing user
+       * Implement a function for updating a user in the database
+       * Implement a UI form for deleting a user
+       * Implement a function for deleting a user from the database
+     * Category:
+       * Implement a UI form for creating a new category
+       * Implement a function for adding a new category to the database
+       * Implement a UI form for viewing all categories in the database
+       * Implement a function for fetching all categories from the database and displaying them in the UI
+       * Implement a UI form for updating an existing category
+       * Implement a function for updating a category in the database
+       * Implement a UI form for deleting a category
+       * Implement a function for deleting a category from the database
+     * SubCategory:
+       * Implement a UI form for creating a new subcategory
+       * Implement a function for adding a new subcategory to the database
+       * Implement a UI form for viewing all subcategories in the database
+       * Implement a function for fetching all subcategories from the database and displaying them in the UI
+       * Implement a UI form for updating an existing subcategory
+       * Implement a function for updating a subcategory in the database
+       * Implement a UI form for deleting a subcategory
+       * Implement a function for deleting a subcategory from the database
+     * Clients:
+       * Implement functionality to create a new client.
+       * Implement functionality to read client information by their ID.
+       * Implement functionality to update client information by their ID.
+       * Implement functionality to delete a client by their ID.
+     * Employee:
+       * Implement functionality to create a new employee.
+       * Implement functionality to read employee information by their ID.
+       * Implement functionality to update employee information by their ID.
+       * Implement functionality to delete an employee by their ID.
+     * Supplier:
+       * Implement functionality to create a new supplier.
+       * Implement functionality to read supplier information by their ID.
+       * Implement functionality to update supplier information by their ID.
+       * Implement functionality to delete a supplier by their ID.
+     * Product:
+       * Implement functionality to create a new product.
+       * Implement functionality to read product information by its ID.
+       * Implement functionality to update product information by its ID.
+       * Implement functionality to delete a product by its ID.
+     * Purchase:
+       * Implement functionality to create a new purchase record.
+       * Implement functionality to read purchase information by its ID.
+       * Implement functionality to update purchase information by its ID.
+       * Implement functionality to delete a purchase record by its ID.
+     * Stock:
+       * Implement functionality to create a new stock entry.
+       * Implement functionality to read stock information by its ID.
+       * Implement functionality to update stock information by its ID.
+       * Implement functionality to delete a stock entry by its ID.
+     * Sale:
+       * Implement functionality to create a new sale record.
+       * Implement functionality to read sale information by its ID.
+       * Implement functionality to update sale information by its ID.
+       * Implement functionality to delete a sale record by its ID.
     
 3. Implement a search functionality to allow users to search for specific data in the database.
     1. Identify the tables that will be searchable and the fields within each table that will be searchable.
