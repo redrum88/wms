@@ -320,12 +320,22 @@ class CRUD(object):
         print("-----------------------------")
         return True
 
-    # User Group CRUD   
-    def read_usergroup():
+    # User Group CRUD
+    def create_usergroup(self, name, access_level):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO usergroup (name, access_level) VALUES (?, ?)")
+        query.addBindValue(name)
+        query.addBindValue(access_level)
+        if not query.exec():
+            print("Insert usergroup error: ", query.lastError().text())
+            return False
+        print("Insert usergroup success. Last insert id: ", query.lastInsertId())
+        return True
+    def read_usergroup(self):
         query = QSqlQuery()
         query.exec("SELECT * FROM usergroup")
         return query
-    def read_usergroup_by_any(group_id, name, access_level):
+    def read_usergroup_by_any(self, group_id, name, access_level):
         query = QSqlQuery()
         query.prepare("SELECT * FROM usergroup WHERE group_id = ? OR name = ? OR access_level = ?")
         query.addBindValue(group_id)
@@ -333,24 +343,21 @@ class CRUD(object):
         query.addBindValue(access_level)
         query.exec()
         return query
-    def read_usergroup_by_id(group_id):
+    def read_usergroup_by_id(self, group_id):
         query = QSqlQuery()
-        query.prepare("SELECT * FROM usergroup WHERE id = ?")
+        query.prepare("SELECT * FROM usergroup WHERE group_id = ?")
         query.addBindValue(group_id)
         query.exec()
         return query
-    def create_usergroup(name, access_level):
+    def read_usergroup_last(self):
         query = QSqlQuery()
-        query.prepare("INSERT INTO usergroup (name, access_level) VALUES (?, ?, ?)")
-        query.addBindValue(name)
-        query.addBindValue(access_level)
-        if not query.exec():
-            print("Insert usergroup error: ", query.lastError().text())
-            return False
-        return True
-    def update_usergroup(group_id, name, access_level):
+        query.exec("SELECT MAX(group_id) FROM usergroup")
+        query.next()
+        group_id = query.value(0)
+        return group_id
+    def update_usergroup(self, group_id, name, access_level):
         query = QSqlQuery()
-        query.prepare("UPDATE usergroup SET group_id = ?, name = ?, access_level = ? WHERE id = ?")
+        query.prepare("UPDATE usergroup SET group_id = ?, name = ?, access_level = ? WHERE group_id = ?")
         query.addBindValue(group_id)
         query.addBindValue(name)
         query.addBindValue(access_level)
@@ -359,13 +366,23 @@ class CRUD(object):
             print("Update usergroup error: ", query.lastError().text())
             return False
         return True
-    def delete_usergroup(group_id):
+    def delete_usergroup(self, group_id):
         query = QSqlQuery()
-        query.prepare("DELETE FROM usergroup WHERE id = ?")
+        query.prepare("DELETE FROM usergroup WHERE group_id = ?")
         query.addBindValue(group_id)
         if not query.exec():
             print("Delete usergroup error: ", query.lastError().text())
             return False
+        return True
+    def delete_usergroup_last(self):
+        query = QSqlQuery()
+        self.last = self.read_usergroup_last()
+        query.prepare("DELETE FROM usergroup WHERE group_id = ?")
+        query.addBindValue(self.last)
+        if not query.exec():
+            print("Delete usergroup error: ", query.lastError().text())
+            return False
+        print("Delete last usergroup success. Id: ", self.last)
         return True
     
     # Users CRUD
@@ -971,9 +988,17 @@ crud = CRUD()
 #############################################
 
 #last_place = crud.read_place_id_last()
-# Location CRUD
-last_place = crud.read_place_id_last()
-print(last_place)
-last_location = crud.read_location_id_last()
-print(last_location)
-crud.update_location(last_location, "tesddt", "ddd", "test", "test", last_place)
+# UserGroup CRUD
+
+crud.delete_usergroup_last()
+query = crud.read_usergroup()
+while query.next():
+    print(query.value(0), query.value(1), query.value(2))
+# crud.create_usergroup("test", 2)
+# query = crud.read_usergroup()
+# while query.next():
+#     print(query.value(0), query.value(1), query.value(2))
+# crud.update_usergroup(1, "test2", 3)
+# query = crud.read_usergroup()
+# while query.next():
+#     print(query.value(0), query.value(1), query.value(2))
