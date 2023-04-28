@@ -1,8 +1,7 @@
 import os
 # Walk through current directory and print all files and directories
-path = os.getcwd()
-for root, dirs, files in os.walk(path):
-    for file in files:
-        print(file)
-    for dir in dirs:
-        print(dir)
+from db.CRUD import CRUD
+from db.settings import DB
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
