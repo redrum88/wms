@@ -1,7 +1,7 @@
 import sys
 import os
 from PySide6.QtSql import QSqlDatabase
-import createdb
+from db import createdb
 
 DB_TYPE = "QPSQL"
 HOST = "localhost"

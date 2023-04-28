@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from PySide6.QtSql import QSqlDatabase, QSqlQuery
-from settings import DB
+from .settings import DB
 
 
 
@@ -387,6 +387,17 @@ class CRUD(object):
         return True
     
     # Users CRUD
+    def create_users(self, email, password, group_id):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO users (email, password, group_id) VALUES (?, ?, ?)")
+        query.addBindValue(email)
+        query.addBindValue(password)
+        query.addBindValue(group_id)
+        if not query.exec():
+            print("Insert users error: ", query.lastError().text())
+            return False
+        print("Insert users success. Last insert id: ", query.lastInsertId())
+        return True
     def read_users(self):
         query = QSqlQuery()
         query.exec("SELECT * FROM users")
@@ -409,17 +420,6 @@ class CRUD(object):
         query.next()
         user_id = query.value(0)
         return user_id
-    def create_users(self, email, password, group_id):
-        query = QSqlQuery()
-        query.prepare("INSERT INTO users (email, password, group_id) VALUES (?, ?, ?)")
-        query.addBindValue(email)
-        query.addBindValue(password)
-        query.addBindValue(group_id)
-        if not query.exec():
-            print("Insert users error: ", query.lastError().text())
-            return False
-        print("Insert users success. Last insert id: ", query.lastInsertId())
-        return True
     def update_users(self, user_id, email, password, group_id):
         query = QSqlQuery()
         query.prepare("UPDATE users SET user_id = ?, email = ?, password = ?, group_id = ? WHERE user_id = ?")
@@ -519,6 +519,17 @@ class CRUD(object):
         return True
     
     # Subcategory CRUD
+    def create_subcategory(self, category_id, name, description, location_id):
+        query = QSqlQuery()
+        query.prepare("INSERT INTO subcategory (category_id, name, description, location_id) VALUES (?, ?, ?, ?)")
+        query.addBindValue(category_id)
+        query.addBindValue(name)
+        query.addBindValue(description)
+        query.addBindValue(location_id)
+        if not query.exec():
+            print("Insert subcategory error: ", query.lastError().text())
+            return False
+        return True
     def read_subcategory(self):
         query = QSqlQuery()
         query.exec("SELECT * FROM subcategory")
@@ -543,17 +554,6 @@ class CRUD(object):
         query.next()
         subcategory_id = query.value(0)
         return subcategory_id
-    def create_subcategory(self, category_id, name, description, location_id):
-        query = QSqlQuery()
-        query.prepare("INSERT INTO subcategory (category_id, name, description, location_id) VALUES (?, ?, ?, ?)")
-        query.addBindValue(category_id)
-        query.addBindValue(name)
-        query.addBindValue(description)
-        query.addBindValue(location_id)
-        if not query.exec():
-            print("Insert subcategory error: ", query.lastError().text())
-            return False
-        return True
     def update_subcategory(self, subcategory_id, category_id, name, description, location_id):
         query = QSqlQuery()
         query.prepare("UPDATE subcategory SET category_id = ?, name = ?, description = ?, location_id = ? WHERE subcategory_id = ?")
