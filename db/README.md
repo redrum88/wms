@@ -1,5 +1,16 @@
 # ⚒️ Implement **CRUD** (create, read, update, delete) 
 *Implement **CRUD** (create, read, update, delete) functionality for each table in the database, including `Branch`, `Place`, `Location`, `UserGroup`, `Users`, `Category`, `SubCategory`, `Clients`, `Employee`, `Supplier`, `Product`, `Purchase`, `Stock`, and `Sale`.*
+
+## Example usage:
+```py
+from db.CRUD import CRUD
+
+crud = CRUD()
+all_branch = crud.read_branch()
+while all_branch.next():
+    print(all_branch.value(0), all_branch.value(1), all_branch.value(2), all_branch.value(3), all_branch.value(4))
+
+```
 # --------------------
 1. Branch:
    * Implement a function for adding a new branch to the database
@@ -111,31 +122,79 @@
         * `delete_clients_last(self)` ✅
  * Employee:
    * Implement functionality to create a new employee.
+        * `create_employee(self, firstname, lastname, job_title, phone, address, post_code, user_id)` ✅
    * Implement functionality to read employee information by their ID.
+        * `read_employee(self)` ✅
+        * `read_employee_by_any(self, column, value)` ✅
+        * `read_employee_by_id(self, id)` ✅
+        * `read_employee_id_last(self)` ✅
    * Implement functionality to update employee information by their ID.
+        * `update_employee(self, id, firstname, lastname, job_title, phone, address, post_code, user_id)` ✅
    * Implement functionality to delete an employee by their ID.
+        * `delete_employee(self, id)` ✅
+        * `delete_employee_last(self)` ✅
  * Supplier:
    * Implement functionality to create a new supplier.
+        * `create_supplier(self, company, contact_name, email, phone, address, post_code, note)` ✅
    * Implement functionality to read supplier information by their ID.
+        * `read_supplier(self)` ✅
+        * `read_supplier_by_any(self, column, value)` ✅
+        * `read_supplier_by_id(self, id)` ✅
+        * `read_supplier_id_last(self)` ✅
    * Implement functionality to update supplier information by their ID.
+        * `update_supplier(self, id, company, contact_name, email, phone, address, post_code, note)` ✅
    * Implement functionality to delete a supplier by their ID.
+        * `delete_supplier(self, id)` ✅
+        * `delete_supplier_last(self)` ✅
  * Product:
    * Implement functionality to create a new product.
+        * `create_product(self, barcode, name, description, subcategory_id, quanity, price, supplier_id, note)` ✅
    * Implement functionality to read product information by its ID.
+        * `read_product(self)` ✅
+        * `read_product_by_any(self, column, value)` ✅
+        * `read_product_by_id(self, id)` ✅
+        * `read_product_id_last(self)` ✅
    * Implement functionality to update product information by its ID.
+        * `update_product(self, id, barcode, name, description, subcategory_id, quanity, price, supplier_id, note)` ✅
    * Implement functionality to delete a product by its ID.
+        * `delete_product(self, id)` ✅
+        * `delete_product_last(self)` ✅
  * Purchase:
    * Implement functionality to create a new purchase record.
+        * `create_purchase(self, product_id, quanity, purchase_date, supplier_id, employee_id)` ✅
    * Implement functionality to read purchase information by its ID.
+        * `read_purchase(self)` ✅
+        * `read_purchase_by_any(self, column, value)` ✅
+        * `read_purchase_by_id(self, id)` ✅
+        * `read_purchase_id_last(self)` ✅
    * Implement functionality to update purchase information by its ID.
+        * `update_purchase(self, id, product_id, quanity, purchase_date, supplier_id, employee_id)` ✅
    * Implement functionality to delete a purchase record by its ID.
+        * `delete_purchase(self, id)` ✅
+        * `delete_purchase_last(self)` ✅
  * Stock:
    * Implement functionality to create a new stock entry.
+        * `create_stock(self, product_id, category_id, subcategory_id, location_id, supplier_id, purchase_id, employee_id, quantity, cost_price, selling_price, barcode)` ✅
    * Implement functionality to read stock information by its ID.
+        * `read_stock(self)` ✅
+        * `read_stock_by_any(self, column, value)` ✅
+        * `read_stock_by_id(self, stock_id)` ✅
+        * `read_stock_id_last(self)` ✅
    * Implement functionality to update stock information by its ID.
+        * `update_stock(self, stock_id, product_id, category_id, subcategory_id, location_id, supplier_id, purchase_id, employee_id, quantity, cost_price, selling_price, barcode)` ✅
    * Implement functionality to delete a stock entry by its ID.
+        * `delete_stock(self, stock_id)` ✅
+        * `delete_stock_last(self)` ✅
  * Sale:
    * Implement functionality to create a new sale record.
+        * `create_sale(self, product_id, quantity, sale_date, client_id, employee_id)` ✅
    * Implement functionality to read sale information by its ID.
+        * `read_sale(self)` ✅
+        * `read_sale_by_any(self, column, value)` ✅
+        * `read_sale_by_id(self, id)` ✅
+        * `read_sale_id_last(self)` ✅
    * Implement functionality to update sale information by its ID.
+        * `update_sale(self, id, product_id, quantity, sale_date, client_id, employee_id)` ✅
    * Implement functionality to delete a sale record by its ID.
+        * `delete_sale(self, id)` ✅
+        * `delete_sale_last(self)` ✅
