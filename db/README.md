@@ -48,7 +48,7 @@ functionality for each table in the database, including `Branch`, `Place`, `Loca
         * `create_usergroup(self, name, access_level)`
    * ✅ Implement a function for fetching all user groups from the database and displaying them in the UI
         * `read_usergroup(self)`
-        * `read_usergroup_by_any(self, group_id, name, access_level)`
+        * `read_usergroup_by_any(self, column, value)`
         * `read_usergroup_by_id(self, group_id)`
         * `read_usergroup_id_last(self)`
    * ✅ Implement a function for updating a user group in the database
