@@ -28,17 +28,17 @@ WMS is a Warehouse Management System implemented in Python. The project has been
        * Implement a UI form for viewing all branches in the database
        * ✅Implement a function for fetching all branches from the database and displaying them in the UI
             * `read_branch()`
+            * `read_branch_by_id()`
+            * `read_branch_by_any()`
+            * `read_branch_id_last()`
        * Implement a UI form for updating an existing branch
        * ✅Implement a function for updating a branch in the database
             * `update_branch(branch_id, branch_name, phone, address, post_code)`
        * Implement a UI form for deleting a branch
        * ✅Implement a function for deleting a branch from the database
             * `delete_branch(branch_id)`
-       * Extras
-            * `read_branch_by_id()`
-            * `read_branch_by_any()`
-            * `get_last_branch_id()`
-            * `remove_last_branch()`
+            * `delete_branch_last()`
+
             
     2. Place:
        * Implement a UI form for creating a new place
@@ -47,26 +47,35 @@ WMS is a Warehouse Management System implemented in Python. The project has been
        * Implement a UI form for viewing all places in the database
        * ✅Implement a function for fetching all places from the database and displaying them in the UI
             * `read_place()`
+            * `read_place_by_any(column, value)`
+            * `read_place_by_id(place_id)`
+            * `read_place_id_last()`
        * Implement a UI form for updating an existing place
        * ✅Implement a function for updating a place in the database
             * `update_place(place_id, place_name, place_barcode, description, branch_id)`
        * Implement a UI form for deleting a place
        * ✅Implement a function for deleting a place from the database
             * `delete_place(place_id)`
-       * Extras
-            * `read_place_by_any(column, value)`
-            * `read_place_by_id(place_id)`
-            * `get_last_place_id()`
-            * `remove_last_place()`
+            * `delete_place_last()`
+
      * Location:
        * Implement a UI form for creating a new location
-       * Implement a function for adding a new location to the database
+       * ✅ Implement a function for adding a new location to the database
+            * `create_location(self, x, y, z, location_barcode, place_id)`
        * Implement a UI form for viewing all locations in the database
-       * Implement a function for fetching all locations from the database and displaying them in the UI
+       * ✅ Implement a function for fetching all locations from the database and displaying them in the UI
+            * `read_location(self)`
+            * `read_location_by_any(self, column, value)`
+            * `read_location_by_id(self, location_id)`
+            * `read_location_id_last(self)`
        * Implement a UI form for updating an existing location
        * Implement a function for updating a location in the database
+            * `update_location(self, location_id, x, y, z, location_barcode, place_id)`
        * Implement a UI form for deleting a location
        * Implement a function for deleting a location from the database
+            * `delete_location(self, location_id)`
+            * `delete_location_last(self)`
+   
      * UserGroup:
        * Implement a UI form for creating a new user group
        * Implement a function for adding a new user group to the database
