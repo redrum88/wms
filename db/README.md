@@ -38,16 +38,24 @@ functionality for each table in the database, including `Branch`, `Place`, `Loca
         * `read_location_by_any(self, column, value)`
         * `read_location_by_id(self, location_id)`
         * `read_location_id_last(self)`
-   * Implement a function for updating a location in the database
+   * ✅ Implement a function for updating a location in the database
         * `update_location(self, location_id, x, y, z, location_barcode, place_id)`
-   * Implement a function for deleting a location from the database
+   * ✅ Implement a function for deleting a location from the database
         * `delete_location(self, location_id)`
         * `delete_location_last(self)`
  * UserGroup:
-   * Implement a function for adding a new user group to the database
-   * Implement a function for fetching all user groups from the database and displaying them in the UI
-   * Implement a function for updating a user group in the database
-   * Implement a function for deleting a user group from the database
+   * ✅ Implement a function for adding a new user group to the database
+        * `create_usergroup(self, name, access_level)`
+   * ✅ Implement a function for fetching all user groups from the database and displaying them in the UI
+        * `read_usergroup(self)`
+        * `read_usergroup_by_any(self, group_id, name, access_level)`
+        * `read_usergroup_by_id(self, group_id)`
+        * `read_usergroup_id_last(self)`
+   * ✅ Implement a function for updating a user group in the database
+        * `update_usergroup(self, group_id, name, access_level)`
+   * ✅ Implement a function for deleting a user group from the database
+        * `delete_usergroup(self, group_id)`
+        * `delete_usergroup_last(self)`
  * Users:
    * Implement a function for adding a new user to the database
    * Implement a function for fetching all users from the database and displaying them in the UI
