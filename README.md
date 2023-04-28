@@ -24,10 +24,10 @@ WMS is a Warehouse Management System implemented in Python. The project has been
    1. Branch:
        * Implement a UI form for creating a new branch
        * ✅Implement a function for adding a new branch to the database
-            * `insert_branch(branch_name, phone, address, post_code)`
+            * `create_branch(branch_name, phone, address, post_code)`
        * Implement a UI form for viewing all branches in the database
        * ✅Implement a function for fetching all branches from the database and displaying them in the UI
-            * `select_branch()`
+            * `read_branch()`
        * Implement a UI form for updating an existing branch
        * ✅Implement a function for updating a branch in the database
             * `update_branch(branch_id, branch_name, phone, address, post_code)`
@@ -35,20 +35,29 @@ WMS is a Warehouse Management System implemented in Python. The project has been
        * ✅Implement a function for deleting a branch from the database
             * `delete_branch(branch_id)`
        * Extras
-            * `select_branch_by_id()`
-            * `select_branch_by_any()`
+            * `read_branch_by_id()`
+            * `read_branch_by_any()`
             * `get_last_branch_id()`
             * `remove_last_branch()`
             
     2. Place:
        * Implement a UI form for creating a new place
        * ✅Implement a function for adding a new place to the database
+            * `create_place(place_name, place_barcode, description, branch_id)`
        * Implement a UI form for viewing all places in the database
        * ✅Implement a function for fetching all places from the database and displaying them in the UI
+            * `read_place()`
        * Implement a UI form for updating an existing place
        * ✅Implement a function for updating a place in the database
+            * `update_place(place_id, place_name, place_barcode, description, branch_id)`
        * Implement a UI form for deleting a place
        * ✅Implement a function for deleting a place from the database
+            * `delete_place(place_id)`
+       * Extras
+            * `read_place_by_any(column, value)`
+            * `read_place_by_id(place_id)`
+            * `get_last_place_id()`
+            * `remove_last_place()`
      * Location:
        * Implement a UI form for creating a new location
        * Implement a function for adding a new location to the database
