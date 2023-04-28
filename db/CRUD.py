@@ -48,35 +48,9 @@ class CRUD(object):
     def delete(self, table, id):
         query = QSqlQuery()
         query.exec(f"DELETE FROM {table} WHERE id = {id}")
+
     # Branch CRUD
-    def select_branch(self):
-        query = QSqlQuery()
-        query.exec("SELECT * FROM branch")
-        print(query.lastError().text())
-        print(query.executedQuery())
-        print(query.boundValues())
-        print(f"Total rows: {query.size()}")
-        return query
-    def select_branch_by_any(self, column, value):
-        query = QSqlQuery()
-        query.prepare(f"SELECT * FROM branch WHERE {column} = ?")
-        query.addBindValue(value)
-        query.exec()
-        print(query.lastError().text())
-        print(query.executedQuery())
-        print(query.boundValues())
-        print(f"Total rows: {query.size()}")
-        return query
-    def select_branch_by_id(self, branch_id):
-        query = QSqlQuery()
-        query.prepare("SELECT * FROM branch WHERE branch_id = ? ")
-        query.addBindValue(branch_id)
-        query.exec()
-        print(query.lastError().text())
-        print(query.executedQuery())
-        print(query.boundValues())
-        return query
-    def insert_branch(self, branch_name, phone, address, post_code):
+    def create_branch(self, branch_name, phone, address, post_code):
         query = QSqlQuery()
         query.prepare("INSERT INTO branch (branch_name, phone, address, post_code) VALUES (?, ?, ?, ?)")
         query.addBindValue(branch_name)
@@ -91,6 +65,33 @@ class CRUD(object):
         print(query.executedQuery())
         print(query.boundValues())
         return True
+    def read_branch(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM branch")
+        print(query.lastError().text())
+        print(query.executedQuery())
+        print(query.boundValues())
+        print(f"Total rows: {query.size()}")
+        return query
+    def read_branch_by_any(self, column, value):
+        query = QSqlQuery()
+        query.prepare(f"SELECT * FROM branch WHERE {column} = ?")
+        query.addBindValue(value)
+        query.exec()
+        print(query.lastError().text())
+        print(query.executedQuery())
+        print(query.boundValues())
+        print(f"Total rows: {query.size()}")
+        return query
+    def read_branch_by_id(self, branch_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM branch WHERE branch_id = ? ")
+        query.addBindValue(branch_id)
+        query.exec()
+        print(query.lastError().text())
+        print(query.executedQuery())
+        print(query.boundValues())
+        return query
     def update_branch(self, branch_id, branch_name, phone, address, post_code):
         query = QSqlQuery()
         query.prepare("UPDATE branch SET branch_name = ?, phone = ?, address = ?, post_code = ? WHERE branch_id = ?")
@@ -117,17 +118,18 @@ class CRUD(object):
         print(query.executedQuery())
         print(query.boundValues())
         return True
-    def get_last_branch_id(self):
+    
+    def read_branch_id_last(self):
         print("Gettting last branch id...")
         query = QSqlQuery()
         query.exec("SELECT MAX(branch_id) FROM branch")
         query.next()
         branch_id = query.value(0)
         return branch_id
-    def remove_last_branch(self):
+    def delete_branch_last(self):
         print("Removing last branch...")
         query = QSqlQuery()
-        self.last = self.get_last_branch_id()
+        self.last = self.read_branch_id_last()
         query.prepare("DELETE FROM branch WHERE branch_id = ?")
         query.addBindValue(self.last)
         if not query.exec():
@@ -138,34 +140,7 @@ class CRUD(object):
         return True
 
     # Place CRUD
-    def select_place(self):
-        query = QSqlQuery()
-        query.exec("SELECT * FROM place")
-        print(query.lastError().text())
-        print(query.executedQuery())
-        print(query.boundValues())
-        print(f"Total rows: {query.size()}")
-        return query
-    def select_place_by_any(self, column, value):
-        query = QSqlQuery()
-        query.prepare(f"SELECT * FROM place WHERE {column} = ?")
-        query.addBindValue(value)
-        query.exec()
-        print(query.lastError().text())
-        print(query.executedQuery())
-        print(query.boundValues())
-        print(f"Total rows: {query.size()}")
-        return query
-    def select_place_by_id(self, place_id):
-        query = QSqlQuery()
-        query.prepare("SELECT * FROM place WHERE place_id = ?")
-        query.addBindValue(place_id)
-        query.exec()
-        print(query.lastError().text())
-        print(query.executedQuery())
-        print(query.boundValues())
-        return query
-    def insert_place(self, place_name, place_barcode, description, branch_id):
+    def create_place(self, place_name, place_barcode, description, branch_id):
         query = QSqlQuery()
         query.prepare("INSERT INTO place (place_name, place_barcode, description, branch_id) VALUES (?, ?, ?, ?)")
         query.addBindValue(place_name)
@@ -179,6 +154,33 @@ class CRUD(object):
         print(query.executedQuery())
         print(query.boundValues())
         return True
+    def read_place(self):
+        query = QSqlQuery()
+        query.exec("SELECT * FROM place")
+        print(query.lastError().text())
+        print(query.executedQuery())
+        print(query.boundValues())
+        print(f"Total rows: {query.size()}")
+        return query
+    def read_place_by_any(self, column, value):
+        query = QSqlQuery()
+        query.prepare(f"SELECT * FROM place WHERE {column} = ?")
+        query.addBindValue(value)
+        query.exec()
+        print(query.lastError().text())
+        print(query.executedQuery())
+        print(query.boundValues())
+        print(f"Total rows: {query.size()}")
+        return query
+    def read_place_by_id(self, place_id):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM place WHERE place_id = ?")
+        query.addBindValue(place_id)
+        query.exec()
+        print(query.lastError().text())
+        print(query.executedQuery())
+        print(query.boundValues())
+        return query
     def update_place(self, place_id, place_name, place_barcode, description, branch_id):
         query = QSqlQuery()
         query.prepare("UPDATE place SET place_name = ?, place_barcode = ?, description = ?, branch_id = ? WHERE place_id = ?")
@@ -205,17 +207,18 @@ class CRUD(object):
         print(query.executedQuery())
         print(query.boundValues())
         return True
-    def get_last_place_id(self):
+    
+    def read_place_id_last(self):
         print("Gettting last place id...")
         query = QSqlQuery()
         query.exec("SELECT MAX(place_id) FROM place")
         query.next()
         place_id = query.value(0)
         return place_id
-    def remove_last_place(self):
+    def delete_place_last(self):
         print("Removing last place...")
         query = QSqlQuery()
-        self.last = self.get_last_place_id()
+        self.last = self.read_place_id_last()
         query.prepare("DELETE FROM place WHERE place_id = ?")
         query.addBindValue(self.last)
         if not query.exec():
@@ -226,31 +229,10 @@ class CRUD(object):
         return True
     
     # Location CRUD
-    def select_location():
+    def create_location(self, x, y, z, location_barcode, place_id):
+        print("Creating location...")
         query = QSqlQuery()
-        query.exec("SELECT * FROM location")
-        return query
-    def select_location_by_any(location_id, x, y, z, location_barcode, place_id):
-        query = QSqlQuery()
-        query.prepare("SELECT * FROM location WHERE location_id = ? OR x = ? OR y = ? OR z = ? OR location_barcode = ? OR place_id = ?")
-        query.addBindValue(location_id)
-        query.addBindValue(x)
-        query.addBindValue(y)
-        query.addBindValue(z)
-        query.addBindValue(location_barcode)
-        query.addBindValue(place_id)
-        query.exec()
-        return query
-    def select_location_by_id(location_id):
-        query = QSqlQuery()
-        query.prepare("SELECT * FROM location WHERE id = ?")
-        query.addBindValue(location_id)
-        query.exec()
-        return query
-    def insert_location(location_id, x, y, z, location_barcode, place_id):
-        query = QSqlQuery()
-        query.prepare("INSERT INTO location (location_id, x, y, z, location_barcode, place_id) VALUES (?, ?, ?, ?, ?, ?)")
-        query.addBindValue(location_id)
+        query.prepare("INSERT INTO location (x, y, z, location_barcode, place_id) VALUES (?, ?, ?, ?, ?)")
         query.addBindValue(x)
         query.addBindValue(y)
         query.addBindValue(z)
@@ -259,10 +241,43 @@ class CRUD(object):
         if not query.exec():
             print("Insert location error: ", query.lastError().text())
             return False
+        print("Insert location success. Last insert id: ", query.lastInsertId())
         return True
-    def update_location(location_id, x, y, z, location_barcode, place_id):
+    def read_location(self):
         query = QSqlQuery()
-        query.prepare("UPDATE location SET location_id = ?, x = ?, y = ?, z = ?, location_barcode = ?, place_id = ? WHERE id = ?")
+        query.exec("SELECT * FROM location")
+        print(query.lastError().text())
+        print(query.executedQuery())
+        print(query.boundValues())
+        print(f"Total rows: {query.size()}")
+        return query
+    def read_location_by_any(self, column, value):
+        print("Reading location...")
+        query = QSqlQuery()
+        query.prepare(f"SELECT * FROM location WHERE {column} = ?")
+        query.addBindValue(value)
+        query.exec()
+        print(query.lastError().text())
+        return query
+    def read_location_by_id(self, location_id):
+        print("Reading location...")
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM location WHERE id = ?")
+        query.addBindValue(location_id)
+        query.exec()
+        if not query.exec():
+            print("Read location error: ", query.lastError().text())
+            return False
+        print(f"X: {query.value(1)}")
+        print(f"Y: {query.value(2)}")
+        print(f"Z: {query.value(3)}")
+        print(f"Location barcode: {query.value(4)}")
+        print(f"Place id: {query.value(5)}")
+        return query
+    def update_location(self, location_id, x, y, z, location_barcode, place_id):
+        print("Updating location...")
+        query = QSqlQuery()
+        query.prepare("UPDATE location SET location_id = ?, x = ?, y = ?, z = ?, location_barcode = ?, place_id = ? WHERE location_id = ?")
         query.addBindValue(location_id)
         query.addBindValue(x)
         query.addBindValue(y)
@@ -273,22 +288,44 @@ class CRUD(object):
         if not query.exec():
             print("Update location error: ", query.lastError().text())
             return False
+        print("Update location success. Id: ", location_id)
         return True
-    def delete_location(location_id):
+    def delete_location(self, location_id):
+        print("Deleting location...")
         query = QSqlQuery()
-        query.prepare("DELETE FROM location WHERE id = ?")
+        query.prepare("DELETE FROM location WHERE location_id = ?")
         query.addBindValue(location_id)
         if not query.exec():
             print("Delete location error: ", query.lastError().text())
             return False
+        print("Delete location success. Id: ", location_id)
+        return True
+    def read_location_id_last(self):
+        print("Gettting last location id...")
+        query = QSqlQuery()
+        query.exec("SELECT MAX(location_id) FROM location")
+        query.next()
+        location_id = query.value(0)
+        return location_id
+    def delete_location_last(self):
+        print("Removing last location...")
+        query = QSqlQuery()
+        self.last = self.read_location_id_last()
+        query.prepare("DELETE FROM location WHERE location_id = ?")
+        query.addBindValue(self.last)
+        if not query.exec():
+            print("Delete location error: ", query.lastError().text())
+            return False
+        print("Delete last location success. Id: ", self.last)
+        print("-----------------------------")
         return True
 
     # User Group CRUD   
-    def select_usergroup():
+    def read_usergroup():
         query = QSqlQuery()
         query.exec("SELECT * FROM usergroup")
         return query
-    def select_usergroup_by_any(group_id, name, access_level):
+    def read_usergroup_by_any(group_id, name, access_level):
         query = QSqlQuery()
         query.prepare("SELECT * FROM usergroup WHERE group_id = ? OR name = ? OR access_level = ?")
         query.addBindValue(group_id)
@@ -296,13 +333,13 @@ class CRUD(object):
         query.addBindValue(access_level)
         query.exec()
         return query
-    def select_usergroup_by_id(group_id):
+    def read_usergroup_by_id(group_id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM usergroup WHERE id = ?")
         query.addBindValue(group_id)
         query.exec()
         return query
-    def insert_usergroup(name, access_level):
+    def create_usergroup(name, access_level):
         query = QSqlQuery()
         query.prepare("INSERT INTO usergroup (name, access_level) VALUES (?, ?, ?)")
         query.addBindValue(name)
@@ -332,11 +369,11 @@ class CRUD(object):
         return True
     
     # Users CRUD
-    def select_users():
+    def read_users():
         query = QSqlQuery()
         query.exec("SELECT * FROM users")
         return query
-    def select_users_by_any(user_id, username, password, group_id):
+    def read_users_by_any(user_id, username, password, group_id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM users WHERE user_id = ? OR username = ? OR password = ? OR group_id = ?")
         query.addBindValue(user_id)
@@ -345,13 +382,13 @@ class CRUD(object):
         query.addBindValue(group_id)
         query.exec()
         return query
-    def select_users_by_id(user_id):
+    def read_users_by_id(user_id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM users WHERE id = ?")
         query.addBindValue(user_id)
         query.exec()
         return query
-    def insert_users(email, password, group_id):
+    def create_users(email, password, group_id):
         query = QSqlQuery()
         query.prepare("INSERT INTO users (email, password, group_id) VALUES (?, ?, ?, ?)")
         query.addBindValue(email)
@@ -383,11 +420,11 @@ class CRUD(object):
         return True
     
     # Category CRUD
-    def select_category():
+    def read_category():
         query = QSqlQuery()
         query.exec("SELECT * FROM category")
         return query
-    def select_category_by_any(category_id, name, description, place_id):
+    def read_category_by_any(category_id, name, description, place_id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM category WHERE category_id = ? OR name = ? OR description = ? OR place_id = ?")
         query.addBindValue(category_id)
@@ -396,13 +433,13 @@ class CRUD(object):
         query.addBindValue(place_id)
         query.exec()
         return query
-    def select_category_by_id(category_id):
+    def read_category_by_id(category_id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM category WHERE category_id = ?")
         query.addBindValue(category_id)
         query.exec()
         return query
-    def insert_category(name, description, place_id):
+    def create_category(name, description, place_id):
         query = QSqlQuery()
         query.prepare("INSERT INTO category (name, description, place_id) VALUES (?, ?, ?)")
         query.addBindValue(name)
@@ -433,11 +470,11 @@ class CRUD(object):
         return True
     
     # Subcategory CRUD
-    def select_subcategory():
+    def read_subcategory():
         query = QSqlQuery()
         query.exec("SELECT * FROM subcategory")
         return query
-    def select_subcategory_by_any(subcategory_id, category_id, name, description, location_id):
+    def read_subcategory_by_any(subcategory_id, category_id, name, description, location_id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM subcategory WHERE subcategory_id = ? OR category_id = ? OR name = ? OR description = ? OR location_id = ?")
         query.addBindValue(subcategory_id)
@@ -447,13 +484,13 @@ class CRUD(object):
         query.addBindValue(location_id)
         query.exec()
         return query
-    def select_subcategory_by_id(subcategory_id):
+    def read_subcategory_by_id(subcategory_id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM subcategory WHERE subcategory_id = ?")
         query.addBindValue(subcategory_id)
         query.exec()
         return query
-    def insert_subcategory(category_id, name, description, location_id):
+    def create_subcategory(category_id, name, description, location_id):
         query = QSqlQuery()
         query.prepare("INSERT INTO subcategory (category_id, name, description, location_id) VALUES (?, ?, ?, ?)")
         query.addBindValue(category_id)
@@ -486,11 +523,11 @@ class CRUD(object):
         return True
     
     # Clients CRUD
-    def select_clients():
+    def read_clients():
         query = QSqlQuery()
         query.exec("SELECT * FROM clients")
         return query
-    def select_clients_by_any(id, firstname, lastname, conpany, email, phone, address, post_code, note):
+    def read_clients_by_any(id, firstname, lastname, conpany, email, phone, address, post_code, note):
         query = QSqlQuery()
         query.prepare("SELECT * FROM clients WHERE id = ? OR firstname = ? OR lastname = ? OR conpany = ? OR email = ? OR phone = ? OR address = ? OR post_code = ? OR note = ?")
         query.addBindValue(id)
@@ -504,13 +541,13 @@ class CRUD(object):
         query.addBindValue(note)
         query.exec()
         return query
-    def select_clients_by_id(id):
+    def read_clients_by_id(id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM clients WHERE id = ?")
         query.addBindValue(id)
         query.exec()
         return query
-    def insert_clients(firstname, lastname, conpany, email, phone, address, post_code, note):
+    def create_clients(firstname, lastname, conpany, email, phone, address, post_code, note):
         query = QSqlQuery()
         query.prepare("INSERT INTO clients (firstname, lastname, conpany, email, phone, address, post_code, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
         query.addBindValue(firstname)
@@ -551,11 +588,11 @@ class CRUD(object):
         return True
     
     # Employee CRUD
-    def select_employee():
+    def read_employee():
         query = QSqlQuery()
         query.exec("SELECT * FROM employee")
         return query
-    def select_employee_by_any(id, firstname, lastname, job_title, phone, address, post_code, user_id):
+    def read_employee_by_any(id, firstname, lastname, job_title, phone, address, post_code, user_id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM employee WHERE id = ? OR firstname = ? OR lastname = ? OR job_title = ? OR phone = ? OR address = ? OR post_code = ? OR user_id = ?")
         query.addBindValue(id)
@@ -568,13 +605,13 @@ class CRUD(object):
         query.addBindValue(user_id)
         query.exec()
         return query
-    def select_employee_by_id(id):
+    def read_employee_by_id(id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM employee WHERE id = ?")
         query.addBindValue(id)
         query.exec()
         return query
-    def insert_employee(firstname, lastname, job_title, phone, address, post_code, user_id):
+    def create_employee(firstname, lastname, job_title, phone, address, post_code, user_id):
         query = QSqlQuery()
         query.prepare("INSERT INTO employee (firstname, lastname, job_title, phone, address, post_code, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)")
         query.addBindValue(firstname)
@@ -613,11 +650,11 @@ class CRUD(object):
         return True
     
     # Supplier CRUD
-    def select_supplier():
+    def read_supplier():
         query = QSqlQuery()
         query.exec("SELECT * FROM supplier")
         return query
-    def select_supplier_by_any(id, company, contact_name, email, phone, address, post_code, note):
+    def read_supplier_by_any(id, company, contact_name, email, phone, address, post_code, note):
         query = QSqlQuery()
         query.prepare("SELECT * FROM supplier WHERE id = ? OR company = ? OR contact_name = ? OR email = ? OR phone = ? OR address = ? OR post_code = ? OR note = ?")
         query.addBindValue(id)
@@ -630,13 +667,13 @@ class CRUD(object):
         query.addBindValue(note)
         query.exec()
         return query
-    def select_supplier_by_id(id):
+    def read_supplier_by_id(id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM supplier WHERE id = ?")
         query.addBindValue(id)
         query.exec()
         return query
-    def insert_supplier(company, contact_name, email, phone, address, post_code, note):
+    def create_supplier(company, contact_name, email, phone, address, post_code, note):
         query = QSqlQuery()
         query.prepare("INSERT INTO supplier (company, contact_name, email, phone, address, post_code, note) VALUES (?, ?, ?, ?, ?, ?, ?)")
         query.addBindValue(company)
@@ -675,11 +712,11 @@ class CRUD(object):
         return True
     
     # Product CRUD
-    def select_product():
+    def read_product():
         query = QSqlQuery()
         query.exec("SELECT * FROM product")
         return query
-    def select_product_by_any(id, barcode, name, description, subcategory_id, quanity, price, supplier_id, note):
+    def read_product_by_any(id, barcode, name, description, subcategory_id, quanity, price, supplier_id, note):
         query = QSqlQuery()
         query.prepare("SELECT * FROM product WHERE id = ? OR barcode = ? OR name = ? OR description = ? OR subcategory_id = ? OR quanity = ? OR price = ? OR supplier_id = ? OR note = ?")
         query.addBindValue(id)
@@ -693,13 +730,13 @@ class CRUD(object):
         query.addBindValue(note)
         query.exec()
         return query
-    def select_product_by_id(id):
+    def read_product_by_id(id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM product WHERE id = ?")
         query.addBindValue(id)
         query.exec()
         return query
-    def insert_product(barcode, name, description, subcategory_id, quanity, price, supplier_id, note):
+    def create_product(barcode, name, description, subcategory_id, quanity, price, supplier_id, note):
         query = QSqlQuery()
         query.prepare("INSERT INTO product (barcode, name, description, subcategory_id, quanity, price, supplier_id, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
         query.addBindValue(barcode)
@@ -740,11 +777,11 @@ class CRUD(object):
         return True
     
     # Purchase CRUD
-    def select_purchase():
+    def read_purchase():
         query = QSqlQuery()
         query.exec("SELECT * FROM purchase")
         return query
-    def select_purchase_by_any(id, product_id, quanity, purchase_date, supplier_id, employee_id):
+    def read_purchase_by_any(id, product_id, quanity, purchase_date, supplier_id, employee_id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM purchase WHERE id = ? OR product_id = ? OR quanity = ? OR purchase_date = ? OR supplier_id = ? OR employee_id = ?")
         query.addBindValue(id)
@@ -755,13 +792,13 @@ class CRUD(object):
         query.addBindValue(employee_id)
         query.exec()
         return query
-    def select_purchase_by_id(id):
+    def read_purchase_by_id(id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM purchase WHERE id = ?")
         query.addBindValue(id)
         query.exec()
         return query
-    def insert_purchase(product_id, quanity, purchase_date, supplier_id, employee_id):
+    def create_purchase(product_id, quanity, purchase_date, supplier_id, employee_id):
         query = QSqlQuery()
         query.prepare("INSERT INTO purchase (product_id, quanity, purchase_date, supplier_id, employee_id) VALUES (?, ?, ?, ?, ?)")
         query.addBindValue(product_id)
@@ -796,11 +833,11 @@ class CRUD(object):
         return True
     
     # Stock CRUD
-    def select_stock():
+    def read_stock():
         query = QSqlQuery()
         query.exec("SELECT * FROM stock")
         return query
-    def select_stock_by_any(stock_id, product_id, category_id, subcategory_id, location_id, supplier_id, purchase_id, employee_id, quantity, cost_price, selling_price, barcode):
+    def read_stock_by_any(stock_id, product_id, category_id, subcategory_id, location_id, supplier_id, purchase_id, employee_id, quantity, cost_price, selling_price, barcode):
         query = QSqlQuery()
         query.prepare("SELECT * FROM stock WHERE stock_id = ? OR product_id = ? OR category_id = ? OR subcategory_id = ? OR location_id = ? OR supplier_id = ? OR purchase_id = ? OR employee_id = ? OR quantity = ? OR cost_price = ? OR selling_price = ? OR barcode = ?")
         query.addBindValue(stock_id)
@@ -817,13 +854,13 @@ class CRUD(object):
         query.addBindValue(barcode)
         query.exec()
         return query
-    def select_stock_by_id(stock_id):
+    def read_stock_by_id(stock_id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM stock WHERE stock_id = ?")
         query.addBindValue(stock_id)
         query.exec()
         return query
-    def insert_stock(product_id, category_id, subcategory_id, location_id, supplier_id, purchase_id, employee_id, quantity, cost_price, selling_price, barcode):
+    def create_stock(product_id, category_id, subcategory_id, location_id, supplier_id, purchase_id, employee_id, quantity, cost_price, selling_price, barcode):
         query = QSqlQuery()
         query.prepare("INSERT INTO stock (product_id, category_id, subcategory_id, location_id, supplier_id, purchase_id, employee_id, quantity, cost_price, selling_price, barcode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
         query.addBindValue(product_id)
@@ -870,11 +907,11 @@ class CRUD(object):
         return True
     
     # Sale CRUD
-    def select_sale():
+    def read_sale():
         query = QSqlQuery()
         query.exec("SELECT * FROM sale")
         return query
-    def select_sale_by_any(id, product_id, quantity, sale_date, client_id, employee_id):
+    def read_sale_by_any(id, product_id, quantity, sale_date, client_id, employee_id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM sale WHERE id = ? OR product_id = ? OR quantity = ? OR sale_date = ? OR client_id = ? OR employee_id = ?")
         query.addBindValue(id)
@@ -885,13 +922,13 @@ class CRUD(object):
         query.addBindValue(employee_id)
         query.exec()
         return query
-    def select_sale_by_id(id):
+    def read_sale_by_id(id):
         query = QSqlQuery()
         query.prepare("SELECT * FROM sale WHERE id = ?")
         query.addBindValue(id)
         query.exec()
         return query
-    def insert_sale(product_id, quantity, sale_date, client_id, employee_id):
+    def create_sale(product_id, quantity, sale_date, client_id, employee_id):
         query = QSqlQuery()
         query.prepare("INSERT INTO sale (product_id, quantity, sale_date, client_id, employee_id) VALUES (?, ?, ?, ?, ?)")
         query.addBindValue(product_id)
@@ -933,6 +970,10 @@ crud = CRUD()
 ############# TEST CRUD #####################
 #############################################
 
-# Place CRUD
-last = crud.get_last_place_id()
-crud.delete_place(last)
+#last_place = crud.read_place_id_last()
+# Location CRUD
+last_place = crud.read_place_id_last()
+print(last_place)
+last_location = crud.read_location_id_last()
+print(last_location)
+crud.update_location(last_location, "tesddt", "ddd", "test", "test", last_place)
