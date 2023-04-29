@@ -1,3 +1,5 @@
+![](https://github.com/redrum88/wms/raw/main/ui/assets/images/ss.png)
+
 2. Implement **CRUD** (create, read, update, delete) functionality for each table in the database, including `Branch`, `Place`, `Location`, `UserGroup`, `Users`, `Category`, `SubCategory`, `Clients`, `Employee`, `Supplier`, `Product`, `Purchase`, `Stock`, and `Sale`.
    1. Branch:
        * Implement a UI form for creating a new branch
