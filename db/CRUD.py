@@ -589,7 +589,7 @@ class CRUD(object):
         return True
     
     # Users CRUD
-    def create_users(self, email, password, group_id):
+    def create_users(self, email, password, group_id=1):
         query = QSqlQuery()
         query.prepare("INSERT INTO users (email, password, group_id) VALUES (?, ?, ?)")
         query.addBindValue(email)
@@ -653,6 +653,15 @@ class CRUD(object):
             return False
         print("Delete last users success. Id: ", self.last)
         return True
+    def login(self, email, password):
+        query = QSqlQuery()
+        query.prepare("SELECT * FROM users WHERE email = ? AND password = ?")
+        query.addBindValue(email)
+        query.addBindValue(password)
+        query.exec()
+        if query.size() == 1:
+            return True
+        return False
     
     # Category CRUD
     def create_category(self, name, description=None, place_id=None):
