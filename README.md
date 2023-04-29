@@ -2,6 +2,9 @@
 
 WMS is a Warehouse Management System implemented in Python. The project has been organized into two main folders: `db` and `ui`, and a `README.md`, and `requirements.txt` file in the root directory.
 
+Main Window preview. CRUD class core implemented. Working on UI structure..
+![](https://github.com/redrum88/wms/raw/main/ui/assets/images/ss.png)
+
 # TODO:
 1. [Implement User Interface](https://github.com/redrum88/wms/tree/main/ui#readme)
 
