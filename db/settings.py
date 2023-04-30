@@ -29,9 +29,28 @@ class DB:
             sys.exit(1)
         else:
             print("Connected to database.")
+
+    def connect(self):
+        if not self.db.open():
+            print("Cannot open database: ", self.db.lastError().text())
+            sys.exit(1)
+        else:
+            print("Connected to database.")
+
+    def execute(self, query):
+        result = self.db.exec(query)
+        print("Query: ", query)
+        print("Result: ", result)
+        return result
             
     def create_tables(self):
         createdb.init_db()
+
+    def query(self, query):
+        result = self.db.exec(query)
+        print("Query: ", query)
+        print("Result: ", result)
+        return result
 
     def disconnect(self):
         self.db.close()
