@@ -58,7 +58,7 @@ class MainWindow(QMainWindow):
         self.fileMenu.addAction("&Open", self.open_file, QKeySequence("Ctrl+O"))
         self.fileMenu.addAction("&Import", self.import_file, QKeySequence("Ctrl+I"))
         self.fileMenu.addAction("&Export", self.export_file, QKeySequence("Ctrl+E"))
-        self.fileMenu.addAction("&Settings", self.settings, QKeySequence("Ctrl+S"))
+        self.fileMenu.addAction("&Settings", self.settings, QKeySequence(""))
         return self.fileMenu
     
     # Dashboard menu
@@ -70,61 +70,61 @@ class MainWindow(QMainWindow):
     # Inventory menu
     def inventory_menu(self):
         self.inventoryMenu = QMenu("&Inventory", self)
-        self.inventoryMenu.addAction("&Product list", self.product_list, QKeySequence("Ctrl+P"))
-        self.inventoryMenu.addAction("&Stock list", self.stock_list, QKeySequence("Ctrl+K"))
-        self.inventoryMenu.addAction("&Purchase list", self.purchase_list, QKeySequence("Ctrl+U"))
-        self.inventoryMenu.addAction("&Sale list", self.sale_list, QKeySequence("Ctrl+L"))
+        self.inventoryMenu.addAction("&Product list", self.product_list, QKeySequence(""))
+        self.inventoryMenu.addAction("&Stock list", self.stock_list, QKeySequence(""))
+        self.inventoryMenu.addAction("&Purchase list", self.purchase_list, QKeySequence(""))
+        self.inventoryMenu.addAction("&Sale list", self.sale_list, QKeySequence(""))
         return self.inventoryMenu
     
     # Locations menu
     def locations_menu(self):
         self.locationsMenu = QMenu("&Locations", self)
-        self.locationsMenu.addAction("&Branch list", self.branch_list, QKeySequence("Ctrl+B"))
-        self.locationsMenu.addAction("&Place list", self.place_list, QKeySequence("Ctrl+A"))
-        self.locationsMenu.addAction("&Location list", self.location_list, QKeySequence("Ctrl+L"))
+        self.locationsMenu.addAction("&Branch list", self.branch_list, QKeySequence(""))
+        self.locationsMenu.addAction("&Place list", self.place_list, QKeySequence(""))
+        self.locationsMenu.addAction("&Location list", self.location_list, QKeySequence(""))
         return self.locationsMenu
     
     # Users menu
     def users_menu(self):
         self.usersMenu = QMenu("&Users", self)
-        self.usersMenu.addAction("&Add user", self.add_user, QKeySequence("Ctrl+U"))
+        self.usersMenu.addAction("&Add user", self.add_user, QKeySequence(""))
         return self.usersMenu
     
     # Clients menu
     def clients_menu(self):
         self.clientsMenu = QMenu("&Clients", self)
-        self.clientsMenu.addAction("&Add client", self.add_client, QKeySequence("Ctrl+C"))
-        self.clientsMenu.addAction("&View clients", self.view_clients, QKeySequence("Ctrl+V"))
+        self.clientsMenu.addAction("&Add client", self.add_client, QKeySequence(""))
+        self.clientsMenu.addAction("&View clients", self.view_clients, QKeySequence(""))
         return self.clientsMenu
     
     # Employees menu
     def employees_menu(self):
         self.employeesMenu = QMenu("&Employees", self)
-        self.employeesMenu.addAction("&Add employee", self.add_employee, QKeySequence("Ctrl+E"))
-        self.employeesMenu.addAction("&View employees", self.view_employees, QKeySequence("Ctrl+V"))
+        self.employeesMenu.addAction("&Add employee", self.add_employee, QKeySequence(""))
+        self.employeesMenu.addAction("&View employees", self.view_employees, QKeySequence(""))
         return self.employeesMenu
     
     # Suppliers menu
     def suppliers_menu(self):
         self.suppliersMenu = QMenu("&Suppliers", self)
-        self.suppliersMenu.addAction("&Add supplier", self.add_supplier, QKeySequence("Ctrl+S"))
-        self.suppliersMenu.addAction("&View suppliers", self.view_suppliers, QKeySequence("Ctrl+V"))
+        self.suppliersMenu.addAction("&Add supplier", self.add_supplier, QKeySequence(""))
+        self.suppliersMenu.addAction("&View suppliers", self.view_suppliers, QKeySequence(""))
         return self.suppliersMenu
     
     # Reports menu
     def reports_menu(self):
         self.reportsMenu = QMenu("&Reports", self)
-        self.reportsMenu.addAction("&Generate reports", self.generate_reports, QKeySequence("Ctrl+G"))
-        self.reportsMenu.addAction("&View reports", self.view_reports, QKeySequence("Ctrl+V"))
-        self.reportsMenu.addAction("&Generate plots", self.generate_plots, QKeySequence("Ctrl+P"))
-        self.reportsMenu.addAction("&View plots", self.view_plots, QKeySequence("Ctrl+V"))
+        self.reportsMenu.addAction("&Generate reports", self.generate_reports, QKeySequence(""))
+        self.reportsMenu.addAction("&View reports", self.view_reports, QKeySequence(""))
+        self.reportsMenu.addAction("&Generate plots", self.generate_plots, QKeySequence(""))
+        self.reportsMenu.addAction("&View plots", self.view_plots, QKeySequence(""))
         return self.reportsMenu
     
     # Help menu
     def help_menu(self):
         self.helpMenu = QMenu("&Help", self)
-        self.helpMenu.addAction("&About", self.about, QKeySequence("Ctrl+A"))
-        self.helpMenu.addAction("&Help", self.help, QKeySequence("Ctrl+H"))
+        self.helpMenu.addAction("&About", self.about, QKeySequence(""))
+        self.helpMenu.addAction("&Help", self.help, QKeySequence(""))
         return self.helpMenu
     
     # Dashboard
