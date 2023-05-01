@@ -30,19 +30,20 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage("Ready")
         # self.setCentralWidget(MainWidget())
         self.create_menu(self.menuBar())  # Remove parentheses here
+        self.dashboard()
         self.show()
 
     # Create menu bar with menus and actions: File[Exit, Theme Settings, Open, Import, Export, Settings], Dashboard (will show some metrics etc. later will implement), Inventory[Product list, Stock list, Purchase list, Sale list], Locations[Branch list, Place list, Location list], Users, Clients[Add client, View Clients], Employees[Add Employee, View Employees], Suppliers[Add Supplier, View Suppliers], Reports[Generate reports, View Reports, Generate Plots, View Plots], Help[About, Help]
     def create_menu(self, menuBar):
         menuBar.addMenu(self.file_menu())
         menuBar.addMenu(self.dashboard_menu())
-        # menuBar.addMenu(self.inventory_menu())
-        # menuBar.addMenu(self.locations_menu())
-        # menuBar.addMenu(self.users_menu())
-        # menuBar.addMenu(self.clients_menu())
-        # menuBar.addMenu(self.employees_menu())
-        # menuBar.addMenu(self.suppliers_menu())
-        # menuBar.addMenu(self.reports_menu())
+        menuBar.addMenu(self.inventory_menu())
+        menuBar.addMenu(self.locations_menu())
+        menuBar.addMenu(self.users_menu())
+        menuBar.addMenu(self.clients_menu())
+        menuBar.addMenu(self.employees_menu())
+        menuBar.addMenu(self.suppliers_menu())
+        menuBar.addMenu(self.reports_menu())
         menuBar.addMenu(self.help_menu())
         return menuBar
 
@@ -135,8 +136,9 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.dashboard_tab)
     # About
     def about(self):
-        print("About")
-        pass
+        self.about_tab = MainWidget()
+        self.about_tab.show_about_tab()
+        self.setCentralWidget(self.about_tab)
 
     # Help
     def help(self):
@@ -266,13 +268,16 @@ class MainWindow(QMainWindow):
 
     # About
     def about(self):
-        # Show about dialog
-        QMessageBox.about(self, "About", "Inventory Management System\n\nVersion: 1.0.0\n\nAuthor: Eimantas Kulbe ")
-
+        # Show about tab from Widgets class show_about_tab(self)
+        self.about_tab = MainWidget()
+        self.about_tab.show_about_tab()
+        self.setCentralWidget(self.about_tab)
     # Help
     def help(self):
-        # Show help dialog
-        QMessageBox.about(self, "Help", "Help")
+        # Show help tab from Widgets class show_help_tab(self)
+        self.help_tab = MainWidget()
+        self.help_tab.show_help_tab()
+        self.setCentralWidget(self.help_tab)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
